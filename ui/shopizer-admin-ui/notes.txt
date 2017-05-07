@@ -1,0 +1,58 @@
+http://localhost:4200/dashboard/home   
+   
+   
+   <!-- 
+  http://stackoverflow.com/questions/37631098/how-to-bundle-an-angular-2-app-for-production
+   -->
+ 
+  npm install ng2-bootstrap --save
+  npm install angular2-iron-data-table --save
+
+http://jasonwatmore.com/post/2016/09/29/angular-2-user-registration-and-login-example-tutorial
+
+http://www.yegor256.com/2014/06/26/sass-in-java-webapp.html
+
+ng g component customer-list
+ng g service customer
+
+npm install -g npm-check-updates
+npm-check-updates
+
+--> Upgrade <--
+
+npm i -g npm-check-updates
+npm-check-updates -u
+npm install
+
+
+
+//npm installs
+//npm i angular2-data-table -S
+
+npm uninstall angular2-data-table
+
+https://www.npmjs.com/package/angular-2-data-table
+
+--> http://valor-software.com/ng2-table/
+
+https://akveo.github.io/ng2-smart-table/#/
+
+DATA TABLE
+
+https://embed.plnkr.co/6h6oV3SpMywzR2hfDDWG/
+https://angular.jsnews.io/virtual-scrolling-landed-in-angular2-data-table-this-wknd-100k-rows-angularjs-angular2/
+http://stackoverflow.com/questions/40596304/how-to-use-angular2-data-table
+
+-- paper datatable
+https://www.beyondjava.net/blog/how-to-use-a-javascript-datatable-in-an-angular-application/
+
+Country list
+http://www.talkingdotnet.com/cascading-dropdown-select-list-using-angular-js-2/
+http://www.talkingdotnet.com/bind-select-dropdown-list-in-angular-js-2/
+
+https://auth0.com/blog/securing-spring-boot-with-jwts/
+https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
+
+Form validation
+https://scotch.io/tutorials/angular-2-form-validation
+https://angular.io/docs/ts/latest/cookbook/form-validation.html

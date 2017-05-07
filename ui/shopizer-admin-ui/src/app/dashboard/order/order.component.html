@@ -1,0 +1,47 @@
+<div class="container-fluid">
+	<!-- Page Heading -->
+	<div class="row">
+		<div class="col-lg-12">
+			<h2 class="page-header">Create order</h2>
+			<ol class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a
+					href="Javascript:void(0)" routerLink="/dashboard/home">Dashboard</a>
+				</li>
+				<li class="active"><i class="fa fa-edit"></i> Order</li>
+			</ol>
+		</div>
+	</div>
+	<!-- /.row -->
+	
+
+	<div class="row">
+		<div class="col-lg-6">
+			<alert></alert>
+			<div *ngIf="customerId" class="alert-success"> {{customerId}} saved. </div>
+    		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
+			<form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
+				<fieldset class="form-group">
+					<label>First name</label> <input class="form-control" name="firstName" required [(ngModel)]="customer.firstName">
+					<!--<p class="help-block">Example block-level help text here.</p>-->
+					<!--
+					<div [hidden]="firstName.valid || firstName.pristine"
+             			class="alert alert-danger">
+          				First name is required
+          			</div>
+          			-->
+				</fieldset>
+				
+				<button type="submit" class="btn btn-secondary"
+             		[disabled]="!orderForm.form.valid">Submit</button>
+  		
+             	 <span *ngIf="orderId">	
+             	 <button type="button" (click)="newCustomer()" class="btn btn-default">New Order</button>
+				 </span>
+			</form>
+
+
+		</div>
+	</div>
+	<!-- /.row -->
+
+</div>
