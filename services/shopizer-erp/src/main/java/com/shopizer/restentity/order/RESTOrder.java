@@ -13,6 +13,8 @@ public class RESTOrder extends RESTEntity {
 	
 	private String created;
 	
+	private int order;
+	
 
 	private RESTCustomer customer;
 	
@@ -76,6 +78,14 @@ public class RESTOrder extends RESTEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 }
