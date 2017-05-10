@@ -52,13 +52,6 @@ public class CustomerRepositoryTests {
         carter = repository.save(new Customer("Carter", "Beauford", "888-888-9999"));
     }
 
-    @Test
-    public void setsIdOnSave() {
-
-        Customer dave = repository.save(new Customer("Dave", "Matthews", "888-999-9999"));
-
-        assertThat(dave.id).isNotNull();
-    }
 
     @Test
     public void findsByLastName() {

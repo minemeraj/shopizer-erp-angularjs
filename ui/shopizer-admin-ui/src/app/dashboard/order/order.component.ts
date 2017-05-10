@@ -16,13 +16,8 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 })
 export class OrderComponent implements OnInit {
 
-    selectedCountry:Country = new Country('CA', 'Canada');
-    selectedZone:Zone = new Zone('QC', 'Quebec');
     errorMessage: String;
-    countries: Country[];
-    zones: Zone[];
     customerId : string;
-    showProvincesList = true;
     submitted = false;
     active = true;
     
@@ -38,38 +33,5 @@ export class OrderComponent implements OnInit {
     
     ngOnInit() {}
 
-    onValueChanged(data?: any) {
-        console.log('Value changed');
-        if (!this.orderForm) { return; }
-        const form = this.orderForm;
-        for (const field in this.formErrors) {
-          // clear previous error message (if any)
-          this.formErrors[field] = '';
-          const control = form.get(field);
-          if (control && control.dirty && !control.valid) {
-            const messages = this.validationMessages[field];
-            for (const key in control.errors) {
-              this.formErrors[field] += messages[key] + ' ';
-            }
-          }
-        }
-      }
-    
-    formErrors = {
-            'firstName': '',
-            'lastName': '',
-            'emailAddress': '',
-            'address': '',
-            'city': ''
-     };
-    
-    validationMessages = {
-            'firstName': {
-              'required':      'First name is required.'
-            },
-            'lastName': {
-              'required': 'Last name is required.'
-            }
-     };
 
 }

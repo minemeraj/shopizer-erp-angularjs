@@ -15,7 +15,7 @@ import com.mongodb.MongoClient;
 public class MongoConfig extends AbstractMongoConfiguration {
 	
 	public @Bean Mongo mongo() throws UnknownHostException {
-	       return new MongoClient("127.0.0.1",27017);
+	       return new MongoClient("127.0.0.1",27010);
 	}
 
 	@Override

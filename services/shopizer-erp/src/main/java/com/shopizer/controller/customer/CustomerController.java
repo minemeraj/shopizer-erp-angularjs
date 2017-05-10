@@ -42,7 +42,7 @@ public class CustomerController {
 	CustomerRepository customerRepository;
 	
 	@PostMapping("/api/customer")
-	public ResponseEntity<Customer> createCustomer(@Valid @RequestBody RESTCustomer customer, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
+	public ResponseEntity<RESTCustomer> createCustomer(@Valid @RequestBody RESTCustomer customer, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
 
 
 		Customer c = customerPopulator.populateModel(customer, locale);
@@ -55,10 +55,12 @@ public class CustomerController {
 		
 		c.setCreated(new Date());
 		customerRepository.save(c);
+		
+		RESTCustomer restCustomer = customerPopulator.populateWeb(c, locale);
 			
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/customer/{id}").buildAndExpand(c.getId()).toUri());
-		return new ResponseEntity<Customer>(c, headers, HttpStatus.CREATED);
+		return new ResponseEntity<RESTCustomer>(restCustomer, headers, HttpStatus.CREATED);
 
 		
 	}
