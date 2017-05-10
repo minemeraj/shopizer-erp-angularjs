@@ -3,7 +3,6 @@
 # compiled output
 /dist
 /tmp
-/bin
 
 # dependencies
 /node_modules
@@ -40,4 +39,3 @@ testem.log
 #System Files
 .DS_Store
 Thumbs.db
-/target/
