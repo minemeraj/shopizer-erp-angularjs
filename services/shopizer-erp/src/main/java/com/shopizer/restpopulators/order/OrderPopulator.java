@@ -10,24 +10,31 @@ import javax.inject.Inject;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
+import com.shopizer.business.entity.common.Currency;
 import com.shopizer.business.entity.customer.Customer;
 import com.shopizer.business.entity.order.Order;
 import com.shopizer.business.entity.order.OrderTotal;
 import com.shopizer.business.repository.customer.CustomerRepository;
 import com.shopizer.business.services.price.PriceService;
+import com.shopizer.restentity.customer.RESTCustomer;
 import com.shopizer.restentity.order.RESTOrder;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restpopulators.DataPopulator;
+import com.shopizer.restpopulators.customer.CustomerPopulator;
+import com.shopizer.utils.DateUtil;
 
 @Component
-public class RESTOrderPopulator implements DataPopulator<RESTOrder, Order> {
+public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 	
 	
 	@Inject
 	private PriceService priceService;
 	
 	@Inject
-	private RESTOrderTotalPopulator orderTotalPopulator;
+	private OrderTotalPopulator orderTotalPopulator;
+	
+	@Inject
+	private CustomerPopulator customerPopulator;
 	
 	@Inject
 	private CustomerRepository customerRepository;
@@ -58,15 +65,13 @@ public class RESTOrderPopulator implements DataPopulator<RESTOrder, Order> {
 		String customerId = source.getCustomer().getId();
 		Customer customer = customerRepository.findOne(customerId);
 		target.setCustomer(customer);
-		
-		//TODO to be finished
+
 		if(source.getCreated() != null) {
-			//target.setCreated();
+			target.setCreated(DateUtil.getDate(source.getCreated()));
 		}
 		
 		
 		target.setCode(String.valueOf(source.getNumber()));
-		
 		return target;
 		
 
@@ -76,7 +81,43 @@ public class RESTOrderPopulator implements DataPopulator<RESTOrder, Order> {
 	@Override
 	public RESTOrder populateWeb(Order source, Locale locale) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		
+		
+		RESTOrder target = new RESTOrder();
+		target.setId(source.getId());
+		target.setDescription(source.getDescription());
+		target.setNumber(source.getNumber());
+		target.setOrder(source.getOrder());
+		
+		Currency CAD = new Currency("CAD");
+		
+		String total = priceService.formatAmountWithCurrency(CAD, source.getTotal(), locale);
+		target.setTotal(total);
+		
+		if(!CollectionUtils.isEmpty(source.getOrderTotals())) {
+			List<RESTOrderTotal> totals = new ArrayList<RESTOrderTotal>();
+			for(OrderTotal ot : source.getOrderTotals()) {
+				RESTOrderTotal orderTotal = orderTotalPopulator.populateWeb(ot, locale);
+				totals.add(orderTotal);
+			}
+			target.setOrderTotals(totals);
+		}
+		
+		target.setTotal(total);
+		
+		String customerId = source.getCustomer().getId();
+		Customer customer = customerRepository.findOne(customerId);
+		
+		RESTCustomer restCustomer = customerPopulator.populateWeb(customer, locale);
+		
+		target.setCustomer(restCustomer);
+
+		if(source.getCreated() != null) {
+			target.setCreated(DateUtil.formatDate(source.getCreated()));
+		}
+		
+
+		return target;
 	}
 
 }

@@ -13,7 +13,7 @@ import com.shopizer.business.services.price.PriceService;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restpopulators.DataPopulator;
 
-public class RESTOrderTotalPopulator implements DataPopulator<RESTOrderTotal, OrderTotal> {
+public class OrderTotalPopulator implements DataPopulator<RESTOrderTotal, OrderTotal> {
 	
 	
 	@Inject
