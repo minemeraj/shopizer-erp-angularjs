@@ -16,10 +16,11 @@ public class RESTOrder extends RESTEntity {
 	
 	private int order;
 	
-
 	private RESTCustomer customer;
 	
 	private List<RESTOrderTotal> orderTotals;
+	
+	private List<RESTOrderComment> comments;
 	
 	private String total;
 	
@@ -87,6 +88,14 @@ public class RESTOrder extends RESTEntity {
 
 	public void setOrder(int order) {
 		this.order = order;
+	}
+
+	public List<RESTOrderComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<RESTOrderComment> comments) {
+		this.comments = comments;
 	}
 
 }

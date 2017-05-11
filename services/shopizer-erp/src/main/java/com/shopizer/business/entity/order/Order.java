@@ -22,6 +22,8 @@ public class Order extends Entity {
 	
 	private List<OrderTotal> orderTotals;
 	
+	private List<OrderComment> comments;
+	
 	private BigDecimal total;
 	
 	private String description;
@@ -72,6 +74,14 @@ public class Order extends Entity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<OrderComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<OrderComment> comments) {
+		this.comments = comments;
 	}
 
 }

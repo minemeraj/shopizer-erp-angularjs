@@ -13,11 +13,13 @@ import org.springframework.stereotype.Component;
 import com.shopizer.business.entity.common.Currency;
 import com.shopizer.business.entity.customer.Customer;
 import com.shopizer.business.entity.order.Order;
+import com.shopizer.business.entity.order.OrderComment;
 import com.shopizer.business.entity.order.OrderTotal;
 import com.shopizer.business.repository.customer.CustomerRepository;
 import com.shopizer.business.services.price.PriceService;
 import com.shopizer.restentity.customer.RESTCustomer;
 import com.shopizer.restentity.order.RESTOrder;
+import com.shopizer.restentity.order.RESTOrderComment;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restpopulators.DataPopulator;
 import com.shopizer.restpopulators.customer.CustomerPopulator;
@@ -32,6 +34,9 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 	
 	@Inject
 	private OrderTotalPopulator orderTotalPopulator;
+	
+	@Inject
+	private OrderCommentPopulator orderCommentPopulator;
 	
 	@Inject
 	private CustomerPopulator customerPopulator;
@@ -58,6 +63,15 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 				totals.add(orderTotal);
 			}
 			target.setOrderTotals(totals);
+		}
+		
+		if(!CollectionUtils.isEmpty(source.getComments())) {
+			List<OrderComment> comments = new ArrayList<OrderComment>();
+			for(RESTOrderComment oc : source.getComments()) {
+				OrderComment orderComment = orderCommentPopulator.populateModel(oc, locale);
+				comments.add(orderComment);
+			}
+			target.setComments(comments);
 		}
 		
 		target.setTotal(total);
@@ -103,6 +117,15 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 			target.setOrderTotals(totals);
 		}
 		
+		if(!CollectionUtils.isEmpty(source.getComments())) {
+			List<RESTOrderComment> comments = new ArrayList<RESTOrderComment>();
+			for(OrderComment oc : source.getComments()) {
+				RESTOrderComment orderComment = orderCommentPopulator.populateWeb(oc, locale);
+				comments.add(orderComment);
+			}
+			target.setComments(comments);
+		}
+		
 		target.setTotal(total);
 		
 		String customerId = source.getCustomer().getId();
@@ -118,6 +141,14 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		
 
 		return target;
+	}
+
+	public OrderCommentPopulator getOrderCommentPopulator() {
+		return orderCommentPopulator;
+	}
+
+	public void setOrderCommentPopulator(OrderCommentPopulator orderCommentPopulator) {
+		this.orderCommentPopulator = orderCommentPopulator;
 	}
 
 }
