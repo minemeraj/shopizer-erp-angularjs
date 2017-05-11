@@ -1,4 +1,4 @@
-package com.shopizer.business.entity.common;
+package com.shopizer.business.entity.order;
 
 public enum OrderTotalTypeEnum {
 	

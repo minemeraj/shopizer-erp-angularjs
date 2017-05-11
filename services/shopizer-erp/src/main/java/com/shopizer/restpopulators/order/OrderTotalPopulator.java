@@ -8,9 +8,9 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import com.shopizer.business.entity.common.Currency;
-import com.shopizer.business.entity.common.OrderTotalTypeEnum;
-import com.shopizer.business.entity.common.OrderTotalVariationEnum;
 import com.shopizer.business.entity.order.OrderTotal;
+import com.shopizer.business.entity.order.OrderTotalTypeEnum;
+import com.shopizer.business.entity.order.OrderTotalVariationEnum;
 import com.shopizer.business.services.price.PriceService;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restpopulators.DataPopulator;

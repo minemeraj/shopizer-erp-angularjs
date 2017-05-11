@@ -13,4 +13,5 @@ export class Order {
     comments : OrderComment[];
     description : string;
     total : string;
+    status : string;
 }

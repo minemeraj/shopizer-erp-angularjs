@@ -27,6 +27,8 @@ public class Order extends Entity {
 	private BigDecimal total;
 	
 	private String description;
+	
+	private OrderStatusEnum status;
 
 	public Long getNumber() {
 		return number;
@@ -83,5 +85,14 @@ public class Order extends Entity {
 	public void setComments(List<OrderComment> comments) {
 		this.comments = comments;
 	}
+
+	public OrderStatusEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatusEnum status) {
+		this.status = status;
+	}
+
 
 }
