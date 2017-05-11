@@ -18,12 +18,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.shopizer.business.entity.order.OrderStatusEnum;
+import com.shopizer.business.entity.order.OrderTotalTypeEnum;
+import com.shopizer.business.entity.order.OrderTotalVariationEnum;
 import com.shopizer.business.entity.references.Country;
 import com.shopizer.business.entity.references.Zone;
 import com.shopizer.business.repository.references.CountryRepository;
 import com.shopizer.business.repository.references.ZoneRepository;
 import com.shopizer.constants.Constants;
 import com.shopizer.restentity.references.RESTCountry;
+import com.shopizer.restentity.references.RESTOrderReferences;
+import com.shopizer.restentity.references.RESTOrderStatus;
+import com.shopizer.restentity.references.RESTOrderTotalType;
+import com.shopizer.restentity.references.RESTOrderTotalVariation;
 import com.shopizer.restentity.references.RESTZone;
 import com.shopizer.restpopulators.references.CountryPopulator;
 import com.shopizer.restpopulators.references.ZonePopulator;
@@ -103,6 +110,65 @@ public class ReferencesController {
 		
 	    HttpHeaders headers = new HttpHeaders();
 	    return new ResponseEntity<List<RESTZone>>(zoneList, headers, HttpStatus.OK);
+
+	}
+	
+	@GetMapping(value = "/api/references/order")
+	@ResponseBody
+	public ResponseEntity<RESTOrderReferences> getOrderReferences(@RequestParam(value = "lang", required=false) String lang, Locale locale, UriComponentsBuilder ucBuilder) throws Exception  {
+	    
+		if(StringUtils.isBlank(lang)) {
+			lang = Constants.DEFAULT_LANGUAGE;
+		}
+		
+		Locale l = new Locale(lang);
+
+		
+		
+		RESTOrderReferences references = new RESTOrderReferences();
+		
+		OrderStatusEnum[] statusKeys = OrderStatusEnum.values();
+		List<RESTOrderStatus> statusList = new ArrayList<RESTOrderStatus>();
+		for(int i = 0; i < statusKeys.length; i++) {
+			OrderStatusEnum key = statusKeys[i];
+			RESTOrderStatus orderStatus = new RESTOrderStatus();
+			orderStatus.setKey(key.name());
+			//TODO get from bundle
+			orderStatus.setValue(key.name());
+			statusList.add(orderStatus);
+		}
+		references.setStatus(statusList);
+		
+		
+		OrderTotalTypeEnum[] totalKeys = OrderTotalTypeEnum.values();
+		List<RESTOrderTotalType> totalList = new ArrayList<RESTOrderTotalType>();
+		for(int i = 0; i < totalKeys.length; i++) {
+			OrderTotalTypeEnum key = totalKeys[i];
+			RESTOrderTotalType orderTotalType = new RESTOrderTotalType();
+			orderTotalType.setKey(key.name());
+			//TODO get from bundle
+			orderTotalType.setValue(key.name());
+			totalList.add(orderTotalType);
+		}
+		references.setTypes(totalList);
+		
+		
+		OrderTotalVariationEnum[] variationKeys = OrderTotalVariationEnum.values();
+		List<RESTOrderTotalVariation> variationList = new ArrayList<RESTOrderTotalVariation>();
+		for(int i = 0; i < variationKeys.length; i++) {
+			OrderTotalVariationEnum key = variationKeys[i];
+			RESTOrderTotalVariation orderTotalVariationType = new RESTOrderTotalVariation();
+			orderTotalVariationType.setKey(key.name());
+			//TODO get from bundle
+			orderTotalVariationType.setValue(key.name());
+			variationList.add(orderTotalVariationType);
+		}
+		references.setVariations(variationList);
+
+
+		
+	    HttpHeaders headers = new HttpHeaders();
+	    return new ResponseEntity<RESTOrderReferences>(references, headers, HttpStatus.OK);
 
 	}
 

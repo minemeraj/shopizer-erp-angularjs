@@ -56,7 +56,7 @@ export class OrderService {
       
   }
   
-  getById = (id : string) : Observable<Customer> => {
+  getById = (id : string) : Observable<Order> => {
       let user = JSON.parse(localStorage.getItem('currentUser'));
       
       let token = user.token;
@@ -64,12 +64,12 @@ export class OrderService {
       let headers = new Headers({ 'Authorization': token });
       let options = new RequestOptions({ headers: headers });
       
-      var url = environment.baseUrl + '/api/customer/' + id;
+      var url = environment.baseUrl + '/api/order/' + id;
 
       return this.http.get(url, options)
           .map((resp: Response) => {
               //console.log('Response -> ' + resp.text())
-              return resp.json() as Customer;
+              return resp.json() as Order;
           });
       
   }
@@ -93,21 +93,20 @@ export class OrderService {
                  .catch(this.handleErrorObservable);
   }
   
-  save(customer:Customer): Observable<Customer> {
+  save(order:Order): Observable<Order> {
       
       let user = JSON.parse(localStorage.getItem('currentUser'));
 
-      
       let token = user.token;
       
       let headers = new Headers({ 'Authorization': token });
       let options = new RequestOptions({ headers: headers });
       
-      console.log('USING UPDATE CUSTOMER');
+      console.log('USING UPDATE ORDER');
       
-      return this.http.put(environment.baseUrl + '/api/customer/' + customer.id, customer, options)
+      return this.http.put(environment.baseUrl + '/api/order/' + order.id, order, options)
                   .map((resp: Response) => {
-                      return resp.json() as Customer;
+                      return resp.json() as Order;
                   })
                  .catch(this.handleErrorObservable);
   }
