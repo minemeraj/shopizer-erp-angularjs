@@ -39,6 +39,13 @@ export class PasswordComponent implements OnInit {
         this.changePassowrd.username(this.userName);
     }
     
+    onSubmit(value: any, event: Event):void{
+        event.preventDefault();
+        //console.log("******** FORM SUBMITTED ********");
+        this.submitted = true;
+        this.changePassword();
+    }
+    
     
     changePassword() {
         this.userService.changePassword(this.changePassowrd).subscribe(
