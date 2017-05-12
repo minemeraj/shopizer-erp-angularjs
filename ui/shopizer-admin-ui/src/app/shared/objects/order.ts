@@ -14,4 +14,5 @@ export class Order {
     description : string;
     total : string;
     status : string;
+    channel : string;
 }

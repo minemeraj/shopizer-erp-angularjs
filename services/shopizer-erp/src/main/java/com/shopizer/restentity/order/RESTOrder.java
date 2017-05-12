@@ -25,6 +25,10 @@ public class RESTOrder extends RESTEntity {
 	private String total;
 	
 	private String description;
+	
+	private String status;
+	
+	private String channel;
 
 	public Long getNumber() {
 		return number;
@@ -96,6 +100,22 @@ public class RESTOrder extends RESTEntity {
 
 	public void setComments(List<RESTOrderComment> comments) {
 		this.comments = comments;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getChannel() {
+		return channel;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 
 }

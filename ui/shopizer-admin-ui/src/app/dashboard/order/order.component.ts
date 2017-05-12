@@ -13,7 +13,7 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
   selector: 'order-component',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.sass'],
-  providers: [CustomerService,ReferencesService]
+  providers: [CustomerService, OrderService, ReferencesService]
 })
 export class OrderComponent implements OnInit {
 

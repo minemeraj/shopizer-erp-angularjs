@@ -1,4 +1,4 @@
-package com.shopizer.controller.security;
+package com.shopizer.controller.user;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shopizer.restentity.user.RESTUser;
+
 
 /**
  * http://www.codesandnotes.be/2014/10/31/restful-authentication-using-spring-security-on-spring-boot-and-jquery-as-a-web-client/
@@ -18,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController()
-public class AuthenticationController {
+public class UserController {
 	
 	
     @RequestMapping(value = "/api/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> signin(Principal principal) {
+    public ResponseEntity<RESTUser> signin(Principal principal) {
  
-    	User user = new User();
+    	RESTUser user = new RESTUser();
     	user.setFirstName(principal.getName());
     	user.setLastName(principal.getName());
     	
@@ -35,11 +37,11 @@ public class AuthenticationController {
     	
     	user.setPermissions(permissions);
     	
-        return new ResponseEntity<User>(
+        return new ResponseEntity<RESTUser>(
                 user, HttpStatus.OK);
     }
  
-    public static class User {
+/*    public static class User {
         public String getFirstName() {
 			return firstName;
 		}
@@ -69,6 +71,6 @@ public class AuthenticationController {
         public void setMessage(String message) {
             this.message = message;
         }
-    }
+    }*/
 
 }

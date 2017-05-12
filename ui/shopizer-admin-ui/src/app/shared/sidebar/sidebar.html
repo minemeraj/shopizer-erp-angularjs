@@ -23,6 +23,11 @@
 			<i class="fa fa-fw fa-circle"></i> Order list
 		</a>
 		
+		<a [routerLink]="['user']" *ngIf="currentUser.permissions.indexOf('admin') != -1"
+			[routerLinkActive]="['router-link-active']" class="list-group-item">
+			<i class="fa fa-file-o"></i> User management
+		</a> 
+		
 
 <!-- 		<div class="nested-menu">
 			<a class="list-group-item" (click)="addExpandClass('pages')"> <span><i

@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 import com.shopizer.business.entity.common.Currency;
 import com.shopizer.business.entity.customer.Customer;
 import com.shopizer.business.entity.order.Order;
+import com.shopizer.business.entity.order.OrderChannelEnum;
 import com.shopizer.business.entity.order.OrderComment;
+import com.shopizer.business.entity.order.OrderStatusEnum;
 import com.shopizer.business.entity.order.OrderTotal;
 import com.shopizer.business.repository.customer.CustomerRepository;
 import com.shopizer.business.services.price.PriceService;
@@ -52,6 +54,8 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		target.setDescription(source.getDescription());
 		target.setNumber(source.getNumber());
 		target.setOrder(source.getOrder());
+		target.setChannel(OrderChannelEnum.valueOf(source.getChannel()));
+		target.setStatus(OrderStatusEnum.valueOf(source.getStatus()));
 		
 		BigDecimal total = priceService.toPrice(source.getTotal());
 		target.setTotal(total);
@@ -102,6 +106,8 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		target.setDescription(source.getDescription());
 		target.setNumber(source.getNumber());
 		target.setOrder(source.getOrder());
+		target.setChannel(source.getChannel().name());
+		target.setStatus(source.getStatus().name());
 		
 		Currency CAD = new Currency("CAD");
 		

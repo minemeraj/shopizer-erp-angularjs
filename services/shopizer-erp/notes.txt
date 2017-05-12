@@ -1,1 +1,1 @@
-mongod --dbpath /Users/carlsamson/Documents/dev/mongodb/data/db
+mongod --dbpath /Users/carlsamson/Documents/dev/mongodb/data/db --port 27010

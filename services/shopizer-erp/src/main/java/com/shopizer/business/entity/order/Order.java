@@ -29,6 +29,8 @@ public class Order extends Entity {
 	private String description;
 	
 	private OrderStatusEnum status;
+	
+	private OrderChannelEnum channel;
 
 	public Long getNumber() {
 		return number;
@@ -92,6 +94,14 @@ public class Order extends Entity {
 
 	public void setStatus(OrderStatusEnum status) {
 		this.status = status;
+	}
+
+	public OrderChannelEnum getChannel() {
+		return channel;
+	}
+
+	public void setChannel(OrderChannelEnum channel) {
+		this.channel = channel;
 	}
 
 

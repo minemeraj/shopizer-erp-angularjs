@@ -56,3 +56,5 @@ https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
 Form validation
 https://scotch.io/tutorials/angular-2-form-validation
 https://angular.io/docs/ts/latest/cookbook/form-validation.html
+
+spinner

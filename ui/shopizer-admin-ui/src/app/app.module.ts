@@ -6,12 +6,13 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { UserModule } from './user/user.module';
+//import { UserModule } from './user/user.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CustomerListModule } from './dashboard/customer-list/customer-list.module';
 import { CustomerModule } from './dashboard/customer/customer.module';
+import { UserModule } from './dashboard/user/user.module';
 import { OrderModule } from './dashboard/order/order.module';
 import { AlertModule } from './_directives/alert.module';
 import { AuthGuard } from './_guard/index';
