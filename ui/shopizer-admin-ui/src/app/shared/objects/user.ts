@@ -1,7 +1,6 @@
 export class User {
+  id : string;
   username : string;
   firstName : string;
   lastName : string;
-  password: password
-  repeatPassword : password;
 }

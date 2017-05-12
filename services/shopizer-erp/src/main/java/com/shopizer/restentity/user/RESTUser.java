@@ -2,7 +2,9 @@ package com.shopizer.restentity.user;
 
 import java.util.List;
 
-public class RESTUser {
+import com.shopizer.restentity.common.RESTEntity;
+
+public class RESTUser extends RESTEntity {
 	
 	private String firstName;
 	private String lastName;

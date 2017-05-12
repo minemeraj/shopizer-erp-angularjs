@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
 		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
 		String encodedPassword = encoder.encodePassword(password, null);
 		user.setPassword(encodedPassword);
+		saveUser(user);
 
 	}
 
@@ -62,6 +64,19 @@ public class UserServiceImpl implements UserService {
 		
 		
 		return userDetails;
+	}
+	
+	@Override
+	public boolean passwordMatches(String password, UserDetails userDetails) {
+		
+		Validate.notNull(password,"Password must not be null");
+		Validate.notNull(userDetails,"UserDetails must not be null");
+		Validate.notNull(userDetails.getPassword(),"UserDetails password  must not be null");
+		
+		ShaPasswordEncoder encoder = new ShaPasswordEncoder();
+		String encodedPassword = encoder.encodePassword(password, null);
+		
+		return encodedPassword.equals(userDetails.getPassword());
 	}
 	
 public class UserInformations implements UserDetails {
@@ -165,5 +180,7 @@ public class Permission implements GrantedAuthority {
 	
 	
 }
+
+
 
 }
