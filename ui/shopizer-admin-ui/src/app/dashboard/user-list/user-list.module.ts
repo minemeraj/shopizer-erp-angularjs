@@ -7,7 +7,7 @@ import {AlertModule} from '../../_directives/alert.module';
 
 
 
-import { PasswordComponent } from './password.component';
+import { UserListComponent } from './user-list.component';
 
 @NgModule({
     imports: [
@@ -18,8 +18,8 @@ import { PasswordComponent } from './password.component';
         FormsModule,
         ReactiveFormsModule
     ],
-    declarations: [PasswordComponent],
-    exports: [PasswordComponent]
+    declarations: [UserListComponent],
+    exports: [UserListComponent]
 })
 
-export class PasswordModule { }
+export class UserListModule { }

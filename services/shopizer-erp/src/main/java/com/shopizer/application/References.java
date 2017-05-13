@@ -127,6 +127,7 @@ public class References {
 			
 			List<String> permissions = new ArrayList<String>();
 			permissions.add("admin");
+			permissions.add("superuser");
 			
 			admin.setPermissions(permissions);
 			

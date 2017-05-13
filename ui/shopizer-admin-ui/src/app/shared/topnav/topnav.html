@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-inverse navbar-fixed-top topnav">
 	<div class="collapse navbar-toggleable-xs clearfix text-center">
-		<a class="navbar-brand" [routerLink]="['/dashboard','/home']">Shopizer ERP</a>
+		<a class="navbar-brand" [routerLink]="['/dashboard','/home']">{{appName}}</a>
 
 		<ul
 			class="nav navbar-nav top-nav navbar-right pull-xs-right top-right-nav">
@@ -105,7 +105,7 @@
 					<i class="fa fa-user"></i> {{currentUser.firstName}} {{currentUser.lastName}} <b class="caret"></b>
 			</a>
 				<ul class="dropdown-menu" aria-labelledby="single-button">
-					<li><a class="dropdown-item" href="javascript:;"><i
+					<li><a class="dropdown-item" href="javascript:;" [routerLink]="['password']"><i
 							class="fa fa-fw fa-gear"></i> Settings</a></li>
 					<li class="divider"></li>
 					<li><a class="dropdown-item" href="javascript:;"

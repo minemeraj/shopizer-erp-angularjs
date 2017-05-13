@@ -10,6 +10,8 @@ import { CustomerListRoutes } from './customer-list/customer-list.routes';
 import { CustomerRoutes } from './customer/customer.routes';
 import { OrderRoutes } from './order/order.routes';
 import { UserRoutes } from './user/user.routes';
+import { UserListRoutes } from './user-list/user-list.routes';
+import { PasswordRoutes } from './password/password.routes';
 import { BSComponentRoutes } from './bs-component/bsComponent.routes';
 import { BSElementRoutes } from './bs-element/bsElement.routes';
 
@@ -34,7 +36,9 @@ export const DashboardRoutes: Route[] = [
         ...CustomerListRoutes,
         ...CustomerRoutes,
         ...OrderRoutes,
-        ...UserRoutes
+        ...UserRoutes,
+        ...UserListRoutes,
+        ...PasswordRoutes
       ]
     }
 ];

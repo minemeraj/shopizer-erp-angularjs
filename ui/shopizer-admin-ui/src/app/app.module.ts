@@ -13,7 +13,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { CustomerListModule } from './dashboard/customer-list/customer-list.module';
 import { CustomerModule } from './dashboard/customer/customer.module';
 import { UserModule } from './dashboard/user/user.module';
+import { UserListModule } from './dashboard/user-list/user-list.module';
 import { OrderModule } from './dashboard/order/order.module';
+import { PasswordModule } from './dashboard/password/password.module';
 import { AlertModule } from './_directives/alert.module';
 import { AuthGuard } from './_guard/index';
 import { AlertService, AuthenticationService, ReferencesService } from './_services/index';
@@ -36,11 +38,13 @@ import { CustomerComponent} from './dashboard/customer/customer.component';
     RouterModule.forRoot(routes),
     LoginModule,
     UserModule,
+    UserListModule,
     SignupModule,
     DashboardModule,
     CustomerListModule,
     CustomerModule,
     OrderModule,
+    PasswordModule,
     AlertModule
   ],
   providers: [
