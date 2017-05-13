@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-//import { UserModule } from './user/user.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -38,10 +37,10 @@ import { CustomerComponent} from './dashboard/customer/customer.component';
     RouterModule.forRoot(routes),
     LoginModule,
     UserModule,
-    UserListModule,
     SignupModule,
     DashboardModule,
     CustomerListModule,
+    UserListModule,
     CustomerModule,
     OrderModule,
     PasswordModule,

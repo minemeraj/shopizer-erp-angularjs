@@ -26,7 +26,6 @@ export class UserListComponent implements OnInit {
     
 
     constructor(
-        private referencesService : ReferencesService,
         private alertService: AlertService,
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder

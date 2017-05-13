@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 
-import { UserList } from './index';
+import { UserListComponent } from './index';
 
 export const UserListRoutes: Route[] = [
   {
