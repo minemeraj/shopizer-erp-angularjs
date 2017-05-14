@@ -1,5 +1,6 @@
 package com.shopizer.business.entity.user;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -18,6 +19,7 @@ public class User {
 	private String id;
 	private String firstName;
 	private String lastName;
+	private Date created;
 	
 	@Indexed(unique=true)
 	private String userName;
@@ -58,6 +60,12 @@ public class User {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 }

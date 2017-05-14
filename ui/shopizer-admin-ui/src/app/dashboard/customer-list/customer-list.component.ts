@@ -19,17 +19,6 @@ import 'datatables.net'
 })
 export class CustomerListComponent implements OnInit {
     
-    /**
-    public data =
-        [{
-          "firstName": "Anna",
-          "lastName": "Konda"
-        },
-        {
-          "firstName": "Wayne",
-          "lastName": "Interessierts"
-        }];
-    **/
 
 
   constructor(private customerService: CustomerService) { 

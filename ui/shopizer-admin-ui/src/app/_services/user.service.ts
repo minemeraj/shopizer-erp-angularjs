@@ -45,7 +45,7 @@ export class UserService {
       let headers = new Headers({ 'Authorization': token });
       let options = new RequestOptions({ headers: headers });
       
-      var url = environment.baseUrl + '/api/orders?page=0&size=5000'
+      var url = environment.baseUrl + '/api/users'
 
       return this.http.get(url, options)
           .map((resp: Response) => {
@@ -63,7 +63,7 @@ export class UserService {
       let headers = new Headers({ 'Authorization': token });
       let options = new RequestOptions({ headers: headers });
       
-      var url = environment.baseUrl + '/api/order/' + id;
+      var url = environment.baseUrl + '/api/user/' + id;
 
       return this.http.get(url, options)
           .map((resp: Response) => {
