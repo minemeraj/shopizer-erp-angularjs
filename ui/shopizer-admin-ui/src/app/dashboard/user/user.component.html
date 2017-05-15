@@ -32,29 +32,27 @@
 				
 				<fieldset class="form-group">
 					<label>Email address (used as user name)</label> <input
-						class="form-control" placeholder="" name="emailAddress" required [(ngModel)]="user.userName">
+						class="form-control" placeholder="" name="emailAddress" required [(ngModel)]="user.username">
 				</fieldset>	
 				
 				<fieldset class="form-group">
 					<label>Password</label> <input
-						class="form-control" placeholder="" name="password" required [(ngModel)]="user.password">
+						class="form-control" placeholder="" name="password" >
 				</fieldset>
 				
 				<fieldset class="form-group">
 					<label>Repeat password</label> <input
-						class="form-control" placeholder="" name="repeatPassword" required [(ngModel)]="user.password">
+						class="form-control" placeholder="" name="repeatPassword" >
 				</fieldset>								
 				
 				<fieldset class="form-group">
-					<label>Prmissions</label>
+					<label>Permissions</label>
 				    <div *ngFor="let permission of permissions">
-				        <label>
 				            <input type="checkbox"
 				                   name="permissions"
 				                   value="{{permission.value}}"
-				                   [(ngModel)]="permission.checked"/>
+				                   [(ngModel)]="user.permissions"/>
 				            {{permission.name}}
-				        </label>
 				    </div>
 				</fieldset>
 

@@ -90,7 +90,6 @@ export class CustomerComponent implements OnInit {
     }
     
     buildForm(): void {
-        console.log("-- ENTERING BUILD FORM --");
         this.customerForm = this.fb.group({
           'firstName': [this.customer.firstName, [
               Validators.required
@@ -132,7 +131,7 @@ export class CustomerComponent implements OnInit {
     }
     
     onSelect(code) {
-        console.log('Selected country code ' + code);
+        //console.log('Selected country code ' + code);
         this.getZones(code);
     }
     

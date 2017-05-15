@@ -13,16 +13,48 @@
 	</div>
 	<!-- /.row -->
 	
+				<!-- 
+				
+				Customer								OrderID
+				First Name Last Name					Due Date
+				Email									Status
+				Phone									Created By
+				Address									Last Update
+				City
+				Postal Code
+				Province, Country
+				
+				Order Description --------------------------------
+				
+														Price (Order Total - Sub total)
+														Down payment (Order Total)
+														Total (Order.total)
+														
+				Comments
+
+				 -->
+
 
 	<div class="row">
-		<div class="col-lg-6">
+		<div class="col-lg-12">
 			<alert></alert>
 
     		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
 			<form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
-				<fieldset class="form-group">
+			<div class="col-lg-6">
+				{{order.customer.firstName}} {{order.customer.lastName}}<br/>
+				<span *ngIf="order.customer.emailAddress">{{order.customer.emailAddress}}<br/></span>
+				{{order.customer.phoneNumber}}<br/>
+			</div>
+			<div class="col-lg-6">
+			
+			</div>
+			
 
-				</fieldset>
+				 
+				 
+
+
 				
 				<button type="submit" class="btn btn-secondary"
              		[disabled]="!orderForm.form.valid">Submit</button>
