@@ -11,6 +11,7 @@ public class RESTUser extends RESTEntity {
 	private String userName;
 	private List<String> permissions;
 	private String token;
+	private String password;
 	
 	
 	public String getFirstName() {
@@ -42,6 +43,12 @@ public class RESTUser extends RESTEntity {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

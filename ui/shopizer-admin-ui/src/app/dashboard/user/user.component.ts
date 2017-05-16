@@ -18,11 +18,7 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 export class UserComponent implements OnInit {
     
     
-    permissions: [
-             { name: 'Administrator',  value: 'admin' },
-             { name: 'Manage orders',  value: 'orders'}
-    ]
-
+    permissions : string[] = [];
     errorMessage: String;
     userId : string;
     submitted = false;
@@ -71,13 +67,21 @@ export class UserComponent implements OnInit {
     
     onSubmit(value: any, event: Event):void{
         event.preventDefault();
-        //console.log("******** FORM SUBMITTED ********");
+        console.log("******** User FORM SUBMITTED ********");
         this.submitted = true;
         this.user = value;
+        console.log('User admin ' + this.user.isAdmin);
+        console.log('Password ' + this.password);
         this.user.password = this.password;
-        //console.log('Customer id ' + this.customer.id);
+        
         if(this.user.id == null || this.user.id == '') {
-            
+
+            this.permissions.push('user');
+            if(this.user.isAdmin == true) {
+                this.permissions.push('admin');
+            }
+            this.user.permissions = this.permissions;
+            console.log("******** User FORM SUBMITTED create ********");
             this.userService.create(this.user)
                     .subscribe(
                         user => {
@@ -93,6 +97,9 @@ export class UserComponent implements OnInit {
                     //            error => this.errorMessage = <any>error
                     //           );
         } else {
+            
+            
+            console.log("******** User FORM SUBMITTED edit ********");
             this.userService.save(this.user)
             .subscribe(
                 user => {
@@ -121,10 +128,14 @@ export class UserComponent implements OnInit {
                Validators.required                                  
             ]
           ],
-          'emailAddress': [this.user.username, [
+          'userName': [this.user.userName, [
                Validators.required                                  
             ]
-          ]
+          ],
+          'password': [this.user.password, [
+                Validators.required                                  
+             ]
+           ]
         });
         this.userForm.valueChanges
         .subscribe(data => this.onValueChanged(data));
@@ -158,7 +169,9 @@ export class UserComponent implements OnInit {
     formErrors = {
             'firstName': '',
             'lastName': '',
-            'emailAddress': ''
+            'emailAddress': '',
+            'userName': '',
+            'password': ''
      };
     
     validationMessages = {

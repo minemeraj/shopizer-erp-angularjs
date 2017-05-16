@@ -21,6 +21,7 @@ public class UserPopulator implements DataPopulator<RESTUser, User> {
 		target.setLastName(source.getUserName());
 		target.setUserName(source.getUserName());
 		target.setPermissions(source.getPermissions());
+		target.setPassword(source.getPassword());
 		target.setId(source.getId());
 		
 		return target;
@@ -35,6 +36,7 @@ public class UserPopulator implements DataPopulator<RESTUser, User> {
 		target.setLastName(source.getUserName());
 		target.setPermissions(source.getPermissions());
 		target.setId(source.getId());
+		target.setPassword(source.getPassword());
 		target.setUserName(source.getUserName());
 		
 		return target;

@@ -5,6 +5,7 @@ import { Country } from '../../shared/objects/country';
 import { Zone } from '../../shared/objects/zone';
 import { Customer } from '../../shared/objects/customer';
 import { Order } from '../../shared/objects/order';
+import { OrderId } from '../../shared/objects/orderId';
 import {ReferencesService,CustomerService, OrderService} from '../../_services/index';
 import { AlertService} from '../../_services/index';
 import {Router, ActivatedRoute, Params} from '@angular/router';
@@ -21,6 +22,7 @@ export class OrderComponent implements OnInit {
     customerId : string;
     submitted = false;
     active = true;
+    orderNumber : number;
     
     orderForm : FormGroup;//form
     
@@ -41,15 +43,30 @@ export class OrderComponent implements OnInit {
         this.activatedRoute.params.subscribe((params: Params) => {
             let customerId = params['customerId'];
             if(customerId != null) {
-                //this.getCustomer(id);
+                this.getCustomer(customerId);
             }
             
             let orderId = params['orderId'];
             if(orderId != null) {
                 //this.getOrder(id);
+            } else {
+                this.getOrderNumber();
             }
          });
         
+    }
+    
+    getOrderNumber() {
+        this.orderService.nextOrderId()
+            .subscribe(
+                    OrderId => {
+                this.orderNumber = OrderId.value;
+
+            }, //Bind to view
+                        err => {
+                    // Log errors if any
+                    console.log(err);
+            })
     }
     
     getCustomer(id : string) {
@@ -58,6 +75,7 @@ export class OrderComponent implements OnInit {
         .subscribe(
                 customer => {
                 this.customer = customer;
+                this.order.customer = customer;
 
             }, //Bind to view
                         err => {

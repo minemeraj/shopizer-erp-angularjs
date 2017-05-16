@@ -32,12 +32,12 @@
 				
 				<fieldset class="form-group">
 					<label>Email address (used as user name)</label> <input
-						class="form-control" placeholder="" name="emailAddress" required [(ngModel)]="user.username">
+						class="form-control" placeholder="" name="userName" required [(ngModel)]="user.userName">
 				</fieldset>	
 				
 				<fieldset class="form-group">
 					<label>Password</label> <input
-						class="form-control" placeholder="" name="password" >
+						class="form-control" placeholder="" name="password">
 				</fieldset>
 				
 				<fieldset class="form-group">
@@ -46,14 +46,14 @@
 				</fieldset>								
 				
 				<fieldset class="form-group">
-					<label>Permissions</label>
-				    <div *ngFor="let permission of permissions">
+					<label>User is a system administrator</label>
+				    <!--<div *ngFor="let permission of permissions">-->
+				     <label>
 				            <input type="checkbox"
-				                   name="permissions"
-				                   value="{{permission.value}}"
-				                   [(ngModel)]="user.permissions"/>
-				            {{permission.name}}
-				    </div>
+				                   name="permission"
+				                   value="admin"
+				                   [(ngModel)]="user.isAdmin"/>
+				      </label>
 				</fieldset>
 
 				

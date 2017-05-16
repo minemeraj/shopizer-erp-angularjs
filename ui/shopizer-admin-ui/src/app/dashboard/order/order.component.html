@@ -42,12 +42,17 @@
     		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
 			<form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
 			<div class="col-lg-6">
+				<input type="hidden" name = "order.customer.id" [(ngModel)]="order.customer.id">
 				{{order.customer.firstName}} {{order.customer.lastName}}<br/>
 				<span *ngIf="order.customer.emailAddress">{{order.customer.emailAddress}}<br/></span>
 				{{order.customer.phoneNumber}}<br/>
+				{{order.customer.address}}<br/>
+				{{order.customer.city}}<br/>
+				{{order.customer.postalCode}}<br/>
+				{{order.customer.zone}}, {{order.customer.country}}
 			</div>
 			<div class="col-lg-6">
-			
+				{{orderNumber}}
 			</div>
 			
 
