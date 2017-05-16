@@ -17,8 +17,8 @@ public class UserPopulator implements DataPopulator<RESTUser, User> {
 		
 		
 		User target = new User();
-		target.setFirstName(source.getUserName());
-		target.setLastName(source.getUserName());
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
 		target.setUserName(source.getUserName());
 		target.setPermissions(source.getPermissions());
 		target.setPassword(source.getPassword());
@@ -32,8 +32,8 @@ public class UserPopulator implements DataPopulator<RESTUser, User> {
 
 		
 		RESTUser target = new RESTUser();
-		target.setFirstName(source.getUserName());
-		target.setLastName(source.getUserName());
+		target.setFirstName(source.getFirstName());
+		target.setLastName(source.getLastName());
 		target.setPermissions(source.getPermissions());
 		target.setId(source.getId());
 		target.setPassword(source.getPassword());

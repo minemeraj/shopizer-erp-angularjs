@@ -127,8 +127,9 @@ public class UserController {
 		}
 		
 		u.setCreated(new Date());
-		userRepository.save(u);
 		
+		userService.saveUser(u, user.getPassword());
+
 		RESTUser restUser = userPopulator.populateWeb(u, locale);
 			
 		HttpHeaders headers = new HttpHeaders();
@@ -146,10 +147,8 @@ public class UserController {
 		
 		User u = userPopulator.populateModel(user, locale);
 
-		//get user password
-		u.setPassword(lookupUser.getPassword());
 
-		userRepository.save(u);
+		userService.saveUser(u,user.getPassword());
 		
 		RESTUser restUser = userPopulator.populateWeb(u, locale);
 		

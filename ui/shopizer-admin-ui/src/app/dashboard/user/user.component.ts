@@ -25,6 +25,7 @@ export class UserComponent implements OnInit {
     active = true;
     password : string;
     repeatPassword : string;
+    isAdmin : boolean;
     
     userForm : FormGroup;//form
     
@@ -56,7 +57,11 @@ export class UserComponent implements OnInit {
         .subscribe(
                 user => {
                 this.user = user;
-                this.userId = user.id;
+                this.permissions = user.permissions;
+                
+                if(this.permissions.indexOf('admin') != -1) {
+                    this.isAdmin = true;
+                }
 
             }, //Bind to view
                         err => {
@@ -67,20 +72,19 @@ export class UserComponent implements OnInit {
     
     onSubmit(value: any, event: Event):void{
         event.preventDefault();
-        console.log("******** User FORM SUBMITTED ********");
         this.submitted = true;
         this.user = value;
-        console.log('User admin ' + this.user.isAdmin);
-        console.log('Password ' + this.password);
         this.user.password = this.password;
+        this.user.permissions = this.permissions;
         
         if(this.user.id == null || this.user.id == '') {
 
             this.permissions.push('user');
-            if(this.user.isAdmin == true) {
+            if(this.isAdmin == true) {
                 this.permissions.push('admin');
             }
             this.user.permissions = this.permissions;
+            this.user.password = this.password;
             console.log("******** User FORM SUBMITTED create ********");
             this.userService.create(this.user)
                     .subscribe(
@@ -98,8 +102,10 @@ export class UserComponent implements OnInit {
                     //           );
         } else {
             
-            
-            console.log("******** User FORM SUBMITTED edit ********");
+            if(this.isAdmin == false) {
+                var index = this.permissions.indexOf('admin');
+                this.permissions.splice(index, 1);
+            }
             this.userService.save(this.user)
             .subscribe(
                 user => {

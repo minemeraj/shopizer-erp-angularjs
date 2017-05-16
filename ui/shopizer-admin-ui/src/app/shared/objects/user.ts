@@ -4,6 +4,5 @@ export class User {
   firstName : string;
   lastName : string;
   password : string;
-  isAdmin : boolean;
   permissions : string[];
 }

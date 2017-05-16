@@ -37,7 +37,7 @@
 				
 				<fieldset class="form-group">
 					<label>Password</label> <input
-						class="form-control" placeholder="" name="password">
+						class="form-control" placeholder="" name="password" [(ngModel)]="password">
 				</fieldset>
 				
 				<fieldset class="form-group">
@@ -52,7 +52,7 @@
 				            <input type="checkbox"
 				                   name="permission"
 				                   value="admin"
-				                   [(ngModel)]="user.isAdmin"/>
+				                   [(ngModel)]="isAdmin"/>
 				      </label>
 				</fieldset>
 
