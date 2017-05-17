@@ -28,7 +28,6 @@ import com.shopizer.business.repository.order.OrderIdRepository;
 import com.shopizer.business.repository.references.CountryRepository;
 import com.shopizer.business.repository.references.ZoneRepository;
 import com.shopizer.business.repository.user.UserRepository;
-import com.shopizer.business.services.order.OrderIdService;
 import com.shopizer.constants.Constants;
 import com.shopizer.utils.ZonesLoaderUtil;
 
@@ -122,6 +121,7 @@ public class References {
 		if(admin == null) {
 			admin = new User();
 			admin.setFirstName("admin");
+			admin.setLastName("admin");
 			admin.setUserName("admin@shopizer.com");
 			admin.setLastName("");
 			
@@ -218,6 +218,7 @@ public class References {
 		
 		orderId = new OrderId();
 		orderId.setId(Constants.ORDERIDIDENTIFIER);
+		orderId.setIdentifier(Constants.ORDERIDIDENTIFIER);
 		orderId.setNextOrderNumber(initialOrderId);
 		
 		orderIdRepository.save(orderId);

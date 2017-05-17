@@ -54,6 +54,8 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		target.setDescription(source.getDescription());
 		target.setNumber(source.getNumber());
 		target.setOrder(source.getOrder());
+		target.setCreator(source.getCreator());
+		target.setLastUpdator(source.getLastUpdator());
 		target.setChannel(OrderChannelEnum.valueOf(source.getChannel()));
 		target.setStatus(OrderStatusEnum.valueOf(source.getStatus()));
 		
@@ -108,6 +110,8 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		target.setOrder(source.getOrder());
 		target.setChannel(source.getChannel().name());
 		target.setStatus(source.getStatus().name());
+		target.setCreator(source.getCreator());
+		target.setLastUpdator(source.getLastUpdator());
 		
 		Currency CAD = new Currency("CAD");
 		

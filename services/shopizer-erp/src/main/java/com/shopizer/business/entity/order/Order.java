@@ -31,6 +31,10 @@ public class Order extends Entity {
 	private OrderStatusEnum status;
 	
 	private OrderChannelEnum channel;
+	
+	private String creator;
+	
+	private String lastUpdator;
 
 	public Long getNumber() {
 		return number;
@@ -102,6 +106,22 @@ public class Order extends Entity {
 
 	public void setChannel(OrderChannelEnum channel) {
 		this.channel = channel;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public String getLastUpdator() {
+		return lastUpdator;
+	}
+
+	public void setLastUpdator(String lastUpdator) {
+		this.lastUpdator = lastUpdator;
 	}
 
 

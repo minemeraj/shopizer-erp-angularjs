@@ -28,7 +28,7 @@ export class OrderService {
       let headers = new Headers({ 'Authorization': token });
       let options = new RequestOptions({ headers: headers });
       
-      var url = environment.baseUrl + '/api/orderId'
+      var url = environment.baseUrl + '/api/nextOrderId';
 
       return this.http.get(url, options)
           .map((resp: Response) => {

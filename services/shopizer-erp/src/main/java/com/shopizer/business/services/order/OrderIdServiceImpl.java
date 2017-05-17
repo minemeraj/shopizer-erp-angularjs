@@ -21,11 +21,15 @@ public class OrderIdServiceImpl implements OrderIdService {
 		OrderId orderId = orderIdRepository.findByIdentifier(Constants.ORDERIDIDENTIFIER);
 		increment(orderId);
 		long id = orderId.getNextOrderNumber();
+		
 		return id;
 		
 	}
 	
 	private synchronized void increment(OrderId orderId) {
+		if(orderId == null) {
+			throw new RuntimeException("orderId does not exists");
+		}
         long orderIdSequence = orderId.getNextOrderNumber();
         orderIdSequence ++;
         orderId.setNextOrderNumber(orderIdSequence);

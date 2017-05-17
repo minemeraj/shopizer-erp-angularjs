@@ -7,7 +7,9 @@ export class Order {
     number : number;
     estimated : string;
     created : string;
+    modified : string;
     creator : string;
+    lastUpdator : string;
     customer : Customer;
     orderTotals : OrderTotal[];
     comments : OrderComment[];

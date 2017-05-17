@@ -2,7 +2,7 @@
 	<!-- Page Heading -->
 	<div class="row">
 		<div class="col-lg-12">
-			<h2 class="page-header">Create order</h2>
+			<h2 class="page-header">Create / edit order</h2>
 			<ol class="breadcrumb">
 				<li><i class="fa fa-dashboard"></i> <a
 					href="Javascript:void(0)" routerLink="/dashboard/home">Dashboard</a>
@@ -36,39 +36,109 @@
 
 
 	<div class="row">
-		<div class="col-lg-12">
-			<alert></alert>
-
-    		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
-			<form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
-			<div class="col-lg-6">
-				<input type="hidden" name = "order.customer.id" [(ngModel)]="order.customer.id">
-				{{order.customer.firstName}} {{order.customer.lastName}}<br/>
-				<span *ngIf="order.customer.emailAddress">{{order.customer.emailAddress}}<br/></span>
-				{{order.customer.phoneNumber}}<br/>
-				{{order.customer.address}}<br/>
-				{{order.customer.city}}<br/>
-				{{order.customer.postalCode}}<br/>
-				{{order.customer.zone}}, {{order.customer.country}}
+	    <form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
+			<div class="col-lg-12">
+				<alert></alert>
+	
+	    		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
+				
+				<div class="col-lg-6">
+					<h3>Customer details</h3>
+					<input type="hidden" name = "order.customer.id" [(ngModel)]="order.customer.id">
+					{{order.customer.firstName}} {{order.customer.lastName}}<br/>
+					<span *ngIf="order.customer.emailAddress">{{order.customer.emailAddress}}<br/></span>
+					{{order.customer.phoneNumber}}<br/>
+					{{order.customer.address}}<br/>
+					{{order.customer.city}}<br/>
+					{{order.customer.postalCode}}<br/>
+					{{order.customer.zone}}, {{order.customer.country}}
+				</div>
+				<div class="col-lg-6">
+					<h3>Order details</h3>
+					<table>
+						<tr>
+							<td>Order id </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.number}}</strong></td>
+						</tr>
+						<tr>
+							<td>Creation date </td>
+							<td>&nbsp;</td>
+							<td>{{order.created}}<!--<input type="date" [(ngModel)]="order.created" [ngModelOptions]="{standalone: true}"/>--></td>
+						</tr>
+						<tr>
+							<td>Status </td>
+							<td>&nbsp;</td>
+							<td>					
+								<select class="form-control" [(ngModel)]="order.status" name="order.status"
+								(change)="onSelect($event.target.value)">
+  									<option *ngFor="let x of status"  value="{{x.key}}">
+    									{{x.value}}
+  									</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Created by </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.creator}}</strong></td>
+						</tr>
+						<tr>
+							<td>Last updated by </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.lastUpdator}}</strong></td>
+						</tr>
+						<tr>
+							<td>Last update </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.modified}}</strong></td>
+						</tr>
+						<tr>
+							<td>Estimated </td>
+							<td>&nbsp;</td>
+							<td><input type="date" name="order.estimated" [(ngModel)]="order.estimated" [ngModelOptions]="{standalone: true}"/></td>
+						</tr>
+					</table>
+					
+				</div>
+				
 			</div>
-			<div class="col-lg-6">
-				{{orderNumber}}
+			<div class="col-lg-12">	
+			          <br/>
+					  <div class="form-group">
+    					<h4>Order description</h4>
+    					<textarea class="form-control" name="order.description" rows="5" [(ngModel)]="order.description"></textarea>
+  					  </div>
 			</div>
 			
-
-				 
-				 
-
-
-				
-				<button type="submit" class="btn btn-secondary"
-             		[disabled]="!orderForm.form.valid">Submit</button>
-  		
-
-			</form>
-
-
-		</div>
+			<div class="col-lg-12">	
+				<div class="col-lg-9">&nbsp;</div>
+				<div class="col-lg-3">
+					<table>
+						<tr>
+							<td>Price</td><td>&nbsp;<td><input class="form-control" placeholder="" name="price" required></td>
+						</tr>
+						<tr><td colspan="3">&nbsp;</tr>
+						<tr>
+							<td>Installation</td><td>&nbsp;<td><input class="form-control" placeholder="" name="installation"></td>
+						</tr>
+						<tr><td colspan="3">&nbsp;</tr>
+						<tr>
+							<td>Deposit</td><td>&nbsp;<td><input class="form-control" placeholder="" name="deposit"></td>
+						</tr>	
+						<tr><td colspan="3">&nbsp;</tr>
+						<tr>
+							<td><strong>Total</strong></td><td>&nbsp;<td><input class="form-control" placeholder="" name="total"></td>
+						</tr>				
+					</table>
+				</div>
+			</div>
+					 
+			<div class="col-lg-12">		 
+					<button type="submit" class="btn btn-secondary"
+	             		[disabled]="!orderForm.form.valid">Submit</button>
+			</div>
+		</form>
 	</div>
 	<!-- /.row -->
 

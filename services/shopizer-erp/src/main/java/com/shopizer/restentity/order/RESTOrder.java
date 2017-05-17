@@ -14,6 +14,10 @@ public class RESTOrder extends RESTEntity {
 	
 	private String created;
 	
+	private String creator;
+	
+	private String lastUpdator;
+	
 	private int order;
 	
 	private RESTCustomer customer;
@@ -116,6 +120,22 @@ public class RESTOrder extends RESTEntity {
 
 	public void setChannel(String channel) {
 		this.channel = channel;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public String getLastUpdator() {
+		return lastUpdator;
+	}
+
+	public void setLastUpdator(String lastUpdator) {
+		this.lastUpdator = lastUpdator;
 	}
 
 }

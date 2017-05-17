@@ -23,9 +23,10 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleException(HttpServletRequest request, Exception ex){
 		//logger.info("Exception Occured:: URL="+request.getRequestURL() + " [" + ex.getMessage() + "]");
 		//return "database_error";
+		System.out.println("Exception occuredd " + ex.getMessage());
         String bodyOfResponse = "Exception in service " + ex.getMessage();
 		HttpHeaders headers = new HttpHeaders();
-		return new ResponseEntity<String>(bodyOfResponse, headers, HttpStatus.CONFLICT);
+		return new ResponseEntity<String>(bodyOfResponse, headers, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
 	

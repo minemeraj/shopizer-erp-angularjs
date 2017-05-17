@@ -50,7 +50,7 @@ export class ReferencesService {
     }   
 
   
-    public getOrderReferences = (code:string, lang: string): Observable<OrderReferences> => {
+    public getOrderReferences = (lang: string): Observable<OrderReferences> => {
         
         let user = JSON.parse(localStorage.getItem('currentUser'));
     
