@@ -10,6 +10,7 @@ import { User } from '../../shared/objects/user';
 import { OrderReferences } from '../../shared/objects/orderReferences';
 import { KeyValue } from '../../shared/objects/keyValue';
 import { OrderId } from '../../shared/objects/orderId';
+import { OrderComment } from '../../shared/objects/orderComment';
 import {ReferencesService,CustomerService, OrderService} from '../../_services/index';
 import { AlertService} from '../../_services/index';
 import {Router, ActivatedRoute, Params} from '@angular/router';
@@ -26,7 +27,7 @@ export class OrderComponent implements OnInit {
     orderId : string;
     submitted = false;
     active = true;
-    orderNumber : number;
+    orderNumber : number;//id of the order
     price : string;
     installation : string;
     deposit : string;
@@ -38,6 +39,8 @@ export class OrderComponent implements OnInit {
     disabledDate:{dt:Date,mode:string};
     orderReferences : OrderReferences;
     status : KeyValue[];
+    commentText : string;
+    orderComments : OrderComment[] = [];
     
     orderForm : FormGroup;//form
     
@@ -89,6 +92,26 @@ export class OrderComponent implements OnInit {
             }
          });
         this.getReferences();
+        
+    }
+    
+
+    addComment():void {
+        
+        
+        
+        //add a OrderComment to order
+        if(this.commentText != null && this.commentText != '') {
+            //console.log('Comments are ' + this.commentText);
+            var c = new OrderComment();
+            c.user = this.order.creator;
+            c.comment = this.commentText;
+            let creationDate = this.datePipe.transform(this.date, 'yyyy-MM-dd');
+            c.created = creationDate;
+            this.orderComments.push(c);
+            this.commentText = null;
+        }
+        
         
     }
     
@@ -156,34 +179,39 @@ export class OrderComponent implements OnInit {
         //console.log("******** FORM SUBMITTED ********");
         this.submitted = true;
         this.order = value;
+        this.order.customer = this.customer;
+        this.order.number = this.orderNumber;
+        console.log(value);
+        console.log(this.order.customer.firstName);
+        console.log(this.order.customer.lastName);
+        console.log(this.order.number);
+        console.log(this.order.estimated);
+        //console.log(this.order.description);
         //console.log('Customer id ' + this.customer.id);
-        if(this.order.id == null || this.order.id == '') {
-            this.orderService.create(this.order)
-                    .subscribe(
-                        order => {
-                            this.orderId = order.id;
-                            console.log('Created ordr id ' + this.orderId);
-                    }, //Bind to view
+        
+
+        //if(this.order.id == null || this.order.id == '') {
+        //    this.orderService.create(this.order)
+        //            .subscribe(
+        //                order => {
+        //                    this.orderId = order.id;
+        //                    console.log('Created ordr id ' + this.orderId);
+        //            }, //Bind to view
     
-                            error =>{ this.errorMessage = <any>error, console.log('Error while creating order ' + this.errorMessage)
-                    })
-        } else {
-            this.orderService.save(this.order)
-            .subscribe(
-                order => {
-                    this.orderId = order.id;
+        //                    error =>{ this.errorMessage = <any>error, console.log('Error while creating order ' + this.errorMessage)
+        //            })
+        //} else {
+        //    this.orderService.save(this.order)
+        //    .subscribe(
+        //        order => {
+         //           this.orderId = order.id;
 
-                    console.log('Saved order id ' + this.orderId);
-                //console.log('this.countries.length=' + this.countries.length);
-                //console.log('this.countries[12].name=' + this.countries[12].name);
-            }, //Bind to view
+         //           console.log('Saved order id ' + this.orderId);
+         //   }, //Bind to view
 
-                    error =>{ this.errorMessage = <any>error, console.log('Error while saving order ' + this.errorMessage)
-            })
-            //.subscribe( customer => this.customerId = customer.id,
-            //            error => this.errorMessage = <any>error
-            //           );
-        }
+          //          error =>{ this.errorMessage = <any>error, console.log('Error while saving order ' + this.errorMessage)
+          //  })
+        //}
     }
     
     buildForm(): void {
@@ -198,6 +226,10 @@ export class OrderComponent implements OnInit {
           ],
           'status': [this.order.status, [
                Validators.required                                  
+            ]
+          ],
+          'estimated': [this.order.estimated, [
+              Validators.required                                  
             ]
           ],
           'creator': [this.order.creator, [

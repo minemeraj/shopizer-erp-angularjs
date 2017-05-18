@@ -17,6 +17,7 @@ public class OrderCommentPopulator implements DataPopulator<RESTOrderComment, Or
 
 		OrderComment comment = new OrderComment();
 		comment.setComment(source.getComment());
+		comment.setUser(source.getUser());
 		comment.setCreated(DateUtil.getDate(source.getCreated()));
 		
 		return comment;
@@ -27,6 +28,7 @@ public class OrderCommentPopulator implements DataPopulator<RESTOrderComment, Or
 		
 		RESTOrderComment comment = new RESTOrderComment();
 		comment.setComment(source.getComment());
+		comment.setUser(source.getUser());
 		comment.setCreated(DateUtil.formatDate(source.getCreated()));
 		
 		return comment;
