@@ -1,11 +1,17 @@
 package com.shopizer.controller.order;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.shopizer.business.entity.order.Order;
+import com.shopizer.business.entity.order.OrderTotalTypeEnum;
 import com.shopizer.business.repository.order.OrderRepository;
 import com.shopizer.business.services.order.OrderIdService;
 import com.shopizer.restentity.common.RESTValue;
 import com.shopizer.restentity.order.RESTOrder;
+import com.shopizer.restentity.order.RESTOrderTotal;
+import com.shopizer.restentity.order.RESTTotal;
 import com.shopizer.restpopulators.order.OrderPopulator;
 
 @RestController
@@ -37,7 +46,7 @@ public class OrderController {
 	private OrderRepository orderRepository;
 
 	
-	@GetMapping("/api/nextOrderId")
+	@GetMapping("/api/order/nextOrderId")
 	public ResponseEntity<RESTValue<Long>> nextOrderId(Locale locale) throws Exception {
 		
 		long orderId = orderIdService.nextOderId();
@@ -61,6 +70,8 @@ public class OrderController {
 		if(lookupOrder != null) {
 			throw new Exception("Order with id " + o.getId() + " already exists, use the update method");
 		}
+		
+		//TODO calculate order total
 		
 		o.setCreated(new Date());
 		orderRepository.save(o);
@@ -105,6 +116,56 @@ public class OrderController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/order/{id}").buildAndExpand(o.getId()).toUri());
 		return new ResponseEntity<RESTOrder>(restOrder, headers, HttpStatus.OK);
+
+		
+	}
+	
+	@PostMapping("/api/order/total")
+	public ResponseEntity<RESTTotal> calculateOrderTotal(@RequestBody List<RESTOrderTotal> orderTotals, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
+
+
+		Validate.notNull(orderTotals, "Requires a list of order total to calculate price");
+		
+		BigDecimal orderTotal = new BigDecimal(0);
+		orderTotal.setScale(2, RoundingMode.HALF_EVEN);
+		
+		for(RESTOrderTotal ot : orderTotals) {
+			
+			BigDecimal numericValue = null;
+			try {
+				numericValue = new BigDecimal(ot.getValue());
+			} catch(Exception e) {
+				throw new Exception("Cannot parse " + ot.getValue() + " numeric value");
+			}
+			
+			OrderTotalTypeEnum type = OrderTotalTypeEnum.OTHER;
+			
+			if(!StringUtils.isBlank(ot.getType())) {
+				type = OrderTotalTypeEnum.valueOf(ot.getType());
+			}
+	
+			
+			if(type.name().equals(OrderTotalTypeEnum.DEPOSIT.name())) {
+				orderTotal = orderTotal.subtract(numericValue);
+			} else {
+				orderTotal = orderTotal.add(numericValue);
+			}
+			
+			
+		}
+		
+		//prepare display
+		NumberFormat totalFormat = NumberFormat.getCurrencyInstance(Locale.US);
+		totalFormat.setMinimumFractionDigits( 2 );
+		totalFormat.setMaximumFractionDigits( 2 );
+		
+		String totalText = totalFormat.format(orderTotal.doubleValue());
+
+		RESTTotal restTotal = new RESTTotal();
+		restTotal.setTotal(totalText);
+
+
+		return new ResponseEntity<RESTTotal>(restTotal, HttpStatus.OK);
 
 		
 	}

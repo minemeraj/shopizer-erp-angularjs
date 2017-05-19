@@ -11,6 +11,7 @@ import { OrderReferences } from '../../shared/objects/orderReferences';
 import { KeyValue } from '../../shared/objects/keyValue';
 import { OrderId } from '../../shared/objects/orderId';
 import { OrderComment } from '../../shared/objects/orderComment';
+import { OrderTotal } from '../../shared/objects/orderTotal';
 import {ReferencesService,CustomerService, OrderService} from '../../_services/index';
 import { AlertService} from '../../_services/index';
 import {Router, ActivatedRoute, Params} from '@angular/router';
@@ -44,6 +45,7 @@ export class OrderComponent implements OnInit {
     status : KeyValue[];
     commentText : string;
     orderComments : OrderComment[] = [];
+    orderTotals : OrderTotal[] = [];
     
     orderForm : FormGroup;//form
     
@@ -81,6 +83,8 @@ export class OrderComponent implements OnInit {
     
         this.order.customer = this.customer;
         
+        //init order total
+        this.total = '$0.00';
         this.activatedRoute.params.subscribe((params: Params) => {
             let customerId = params['customerId'];
             if(customerId != null) {
@@ -148,6 +152,57 @@ export class OrderComponent implements OnInit {
             })
     }
     
+    
+    totalsChanged() {
+        
+        this.orderTotals = [];
+        
+        console.log('* Totals value has changed *');
+        console.log('Price -> ' + this.price);
+        console.log('Installation -> ' + this.installation);
+        console.log('Deposit -> ' + this.deposit);
+        
+        if(this.price == null || this.price =='') {
+            return;
+        }
+        
+        var price = new OrderTotal();
+        price.value = this.price;
+        price.name = 'Sub total';
+        price.type = 'SUBTOTAL';
+        this.orderTotals.push(price);
+        
+        if(this.installation != null && this.installation !='') {
+            var installation = new OrderTotal();
+            installation.value = this.installation;
+            installation.name = 'Installation';
+            installation.type = 'INSTALLATION';
+            this.orderTotals.push(installation);
+        }
+        
+        if(this.deposit != null && this.deposit !='') {
+            var deposit = new OrderTotal();
+            deposit.value = this.deposit;
+            deposit.name = 'Deposit';
+            deposit.type = 'DEPOSIT';
+            deposit.variation ='-';
+            this.orderTotals.push(deposit);
+        }
+        
+        this.orderService.total(this.orderTotals)
+        .subscribe(
+                total => {
+                this.total = total.total;
+                console.log('Total is ' + this.total);
+
+            }, //Bind to view
+                        err => {
+                    // Log errors if any
+                    console.log(err);
+         })
+        
+    }
+    
     getCustomer(id : string) {
     
         console.log('Loading customer');
@@ -177,7 +232,7 @@ export class OrderComponent implements OnInit {
                         err => {
                     // Log errors if any
                     console.log(err);
-            })
+         })
     }
     
      onSubmit(value: any, event: Event):void{
@@ -195,18 +250,43 @@ export class OrderComponent implements OnInit {
          
         //validate prices
         //price is required
+        
+
         if(this.price == null || this.price =='') {
             //console.log('price error');
             this.errorMessage = 'Price is required';
             return;
         }
-        var regex  = /^\d+(?:\.\d{0,2})$/;
-        //var numStr = "123.20";
-        if (!regex.test(this.price)) {
-            console.log('not numeric');
-            this.errorMessage = 'Price is not numeric';
+        
+
+        
+        if(!this.isNumeric(this.price)) {
+            this.errorMessage = 'Price should be numeric example 100 or 100.00';
             return;
         }
+        
+        if(this.installation != null && this.installation !='') {
+            if(!this.isNumeric(this.installation)) {
+                this.errorMessage = 'Installation should be numeric example 100 or 100.00';
+                return;
+            }
+        }
+        
+        if(this.deposit != null && this.deposit !='') {
+            if(!this.isNumeric(this.deposit)) {
+                this.errorMessage = 'Deposit should be numeric example 100 or 100.00';
+                return;
+            }
+        }
+        
+        if(this.order.description == null || this.order.description =='') {
+            this.errorMessage = 'Order description is required';
+            return;
+        }
+        
+        this.order.orderTotals = this.orderTotals;
+        
+        console.log('Submited order -> ' + JSON.stringify(this.order));
 
         //if(this.order.id == null || this.order.id == '') {
         //    this.orderService.create(this.order)
@@ -230,6 +310,10 @@ export class OrderComponent implements OnInit {
           //          error =>{ this.errorMessage = <any>error, console.log('Error while saving order ' + this.errorMessage)
           //  })
         //}
+    }
+     
+    isNumeric(n): boolean {
+         return !isNaN(parseFloat(n)) && isFinite(n);
     }
     
     buildForm(): void {

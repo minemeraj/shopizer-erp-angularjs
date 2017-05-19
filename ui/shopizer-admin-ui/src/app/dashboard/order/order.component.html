@@ -136,19 +136,19 @@
 				<div class="col-lg-3">
 					<table>
 						<tr>
-							<td>Price</td><td>&nbsp;<td><input class="form-control" [ngClass]="{ 'has-error' : priceError && submitted }" placeholder="" name="price" [(ngModel)]="price"></td>
+							<td>Price</td><td>&nbsp;<td><input class="form-control" (change)="totalsChanged()" placeholder="0" name="price" [(ngModel)]="price"></td>
 						</tr>
 						<tr><td colspan="3">&nbsp;</tr>
 						<tr>
-							<td>Installation</td><td>&nbsp;<td><input class="form-control" placeholder="" name="installation"></td>
+							<td>Installation</td><td>&nbsp;<td><input class="form-control" (change)="totalsChanged()" placeholder="0" name="installation" [(ngModel)]="installation"></td>
 						</tr>
 						<tr><td colspan="3">&nbsp;</tr>
 						<tr>
-							<td>Deposit</td><td>&nbsp;<td><input class="form-control" placeholder="" name="deposit"></td>
+							<td>Deposit</td><td>&nbsp;<td><input class="form-control" (change)="totalsChanged()" placeholder="0" name="deposit" [(ngModel)]="deposit"></td>
 						</tr>	
 						<tr><td colspan="3">&nbsp;</tr>
 						<tr>
-							<td><strong>Total</strong></td><td>&nbsp;<td><input class="form-control" placeholder="" name="total"></td>
+							<td><strong>Total</strong></td><td>&nbsp;<td><!--<input class="form-control" placeholder="" name="total">-->{{total}}</td>
 						</tr>				
 					</table>
 				</div>

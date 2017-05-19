@@ -7,6 +7,8 @@ import { CustomerList } from '../shared/objects/customerList';
 import { OrderList } from '../shared/objects/orderList';
 import { OrderId } from '../shared/objects/orderId';
 import { Order } from '../shared/objects/order';
+import { OrderTotal } from '../shared/objects/orderTotal';
+import { Total } from '../shared/objects/total';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -28,12 +30,30 @@ export class OrderService {
       let headers = new Headers({ 'Authorization': token });
       let options = new RequestOptions({ headers: headers });
       
-      var url = environment.baseUrl + '/api/nextOrderId';
+      var url = environment.baseUrl + '/api/order/nextOrderId';
 
       return this.http.get(url, options)
           .map((resp: Response) => {
               console.log('Response -> ' + resp.text())
               return resp.json() as OrderId;
+          });
+      
+  }
+  
+  total = (subTotals : OrderTotal[]) : Observable<Total> => {
+      let user = JSON.parse(localStorage.getItem('currentUser'));
+      
+      let token = user.token;
+      
+      let headers = new Headers({ 'Authorization': token });
+      let options = new RequestOptions({ headers: headers });
+      
+      var url = environment.baseUrl + '/api/order/total';
+
+      return this.http.post(url, subTotals, options)
+          .map((resp: Response) => {
+              console.log('Response -> ' + resp.text())
+              return resp.json() as Total;
           });
       
   }
