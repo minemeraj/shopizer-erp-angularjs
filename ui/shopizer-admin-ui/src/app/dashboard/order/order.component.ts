@@ -25,9 +25,12 @@ export class OrderComponent implements OnInit {
 
     errorMessage: String;
     orderId : string;
+    
     submitted = false;
+    
     active = true;
     orderNumber : number;//id of the order
+    
     price : string;
     installation : string;
     deposit : string;
@@ -45,7 +48,9 @@ export class OrderComponent implements OnInit {
     orderForm : FormGroup;//form
     
     customer = new Customer();//reference customer
-    order = new Order();//
+    
+    order = new Order();//object in creation
+    
     currentUser: User;
     
 
@@ -86,12 +91,14 @@ export class OrderComponent implements OnInit {
             let orderId = params['orderId'];
             if(orderId != null) {
                 //this.getOrder(id);
+                //populate formOrder
             } else {
                 console.log('Before get order number ');
                 this.getOrderNumber();
             }
          });
         this.getReferences();
+        this.buildForm();
         
     }
     
@@ -106,8 +113,7 @@ export class OrderComponent implements OnInit {
             var c = new OrderComment();
             c.user = this.order.creator;
             c.comment = this.commentText;
-            let creationDate = this.datePipe.transform(this.date, 'yyyy-MM-dd');
-            c.created = creationDate;
+            c.created = this.today;;
             this.orderComments.push(c);
             this.commentText = null;
         }
@@ -175,20 +181,32 @@ export class OrderComponent implements OnInit {
     }
     
      onSubmit(value: any, event: Event):void{
+        this.errorMessage = null;
         event.preventDefault();
         //console.log("******** FORM SUBMITTED ********");
         this.submitted = true;
-        this.order = value;
+
         this.order.customer = this.customer;
         this.order.number = this.orderNumber;
-        console.log(value);
-        console.log(this.order.customer.firstName);
-        console.log(this.order.customer.lastName);
-        console.log(this.order.number);
-        console.log(this.order.estimated);
-        //console.log(this.order.description);
-        //console.log('Customer id ' + this.customer.id);
-        
+        this.order.comments = this.orderComments;
+         
+        //console.log('Order -> ' + JSON.stringify(this.order));
+        //console.log('Form valid ' + this.orderForm.valid);
+         
+        //validate prices
+        //price is required
+        if(this.price == null || this.price =='') {
+            //console.log('price error');
+            this.errorMessage = 'Price is required';
+            return;
+        }
+        var regex  = /^\d+(?:\.\d{0,2})$/;
+        //var numStr = "123.20";
+        if (!regex.test(this.price)) {
+            console.log('not numeric');
+            this.errorMessage = 'Price is not numeric';
+            return;
+        }
 
         //if(this.order.id == null || this.order.id == '') {
         //    this.orderService.create(this.order)
@@ -235,7 +253,11 @@ export class OrderComponent implements OnInit {
           'creator': [this.order.creator, [
                Validators.required                                  
              ]
-          ]
+          ],
+          'price': [this.price, [
+               Validators.required                                  
+             ]
+          ],
         });
         this.orderForm.valueChanges
         .subscribe(data => this.onValueChanged(data));
@@ -243,7 +265,7 @@ export class OrderComponent implements OnInit {
         //console.log("-- EXITING BUILD FORM --");
     }
     
-        onValueChanged(data?: any) {
+    onValueChanged(data?: any) {
         console.log('Value changed');
         if (!this.orderForm) { return; }
         const form = this.orderForm;
@@ -274,6 +296,9 @@ export class OrderComponent implements OnInit {
             },
             'lastName': {
               'required': 'Last name is required.'
+            },
+             'price': {
+              'required':      'Price is required.'
             }
      };
 

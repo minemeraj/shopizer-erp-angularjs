@@ -64,14 +64,13 @@
 						<tr>
 							<td>Creation date </td>
 							<td>&nbsp;</td>
-							<td>{{order.created}}<!--<input type="date" [(ngModel)]="order.created" [ngModelOptions]="{standalone: true}"/>--></td>
+							<td>{{order.created}}</td>
 						</tr>
 						<tr>
 							<td>Status </td>
 							<td>&nbsp;</td>
 							<td>					
-								<select class="form-control" [(ngModel)]="order.status" name="order.status"
-								(change)="onSelect($event.target.value)">
+								<select class="form-control" [(ngModel)]="order.status" name="order.status">
   									<option *ngFor="let x of status"  value="{{x.key}}">
     									{{x.value}}
   									</option>
@@ -137,7 +136,7 @@
 				<div class="col-lg-3">
 					<table>
 						<tr>
-							<td>Price</td><td>&nbsp;<td><input class="form-control" placeholder="" name="price" required></td>
+							<td>Price</td><td>&nbsp;<td><input class="form-control" [ngClass]="{ 'has-error' : priceError && submitted }" placeholder="" name="price" [(ngModel)]="price"></td>
 						</tr>
 						<tr><td colspan="3">&nbsp;</tr>
 						<tr>
@@ -157,8 +156,11 @@
 					 
 			<div class="col-lg-12">	
 					<br/>	 
+					<button type="submit" class="btn btn-secondary">Save</button>
+	             		<!-- 
 					<button type="submit" class="btn btn-secondary"
-	             		[disabled]="!orderForm.form.valid">Save</button>
+	             		[disabled]="!orderForm.valid">Save</button>
+	             		-->
 			</div>
 		</form>
 	</div>
