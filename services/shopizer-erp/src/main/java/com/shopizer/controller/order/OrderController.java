@@ -13,6 +13,11 @@ import javax.validation.Valid;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +26,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.shopizer.business.entity.customer.Customer;
 import com.shopizer.business.entity.order.Order;
 import com.shopizer.business.entity.order.OrderTotalTypeEnum;
 import com.shopizer.business.repository.order.OrderRepository;
 import com.shopizer.business.services.order.OrderIdService;
+import com.shopizer.restentity.common.RESTList;
 import com.shopizer.restentity.common.RESTValue;
+import com.shopizer.restentity.customer.RESTCustomer;
 import com.shopizer.restentity.order.RESTOrder;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restentity.order.RESTTotal;
@@ -117,7 +126,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/api/order/{id}")
-	public ResponseEntity<RESTOrder> getCustomer(@PathVariable String id, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
+	public ResponseEntity<RESTOrder> getOrder(@PathVariable String id, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
 
 		Order o = orderRepository.findOne(id);
 		
@@ -133,6 +142,29 @@ public class OrderController {
 
 		
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@GetMapping("/api/orders")
+	public ResponseEntity<RESTList<RESTOrder>> getOrders(@RequestParam(value = "page", required=false) int page, @RequestParam(value = "size", required=false) int size, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
+
+		
+		HttpHeaders headers = new HttpHeaders();
+		
+		if(size > 0) {
+			Pageable pageable = new PageRequest(page,size,new Sort(new org.springframework.data.domain.Sort.Order(Direction.DESC, "created")));
+			Page<Order> orders = orderRepository.findAll(pageable);
+			RESTList returnList = new RESTList(orders.getContent(), orders.getSize());
+			return new ResponseEntity<RESTList<RESTOrder>>(returnList, headers, HttpStatus.OK);
+		} else {
+			List<Order> c = (List<Order>) orderRepository.findAll();
+			RESTList returnList = new RESTList(c, c.size());
+			return new ResponseEntity<RESTList<RESTOrder>>(returnList, headers, HttpStatus.OK);
+		}
+
+		
+		
+
+	} 
 	
 	@PostMapping("/api/order/total")
 	public ResponseEntity<RESTTotal> calculateOrderTotal(@RequestBody List<RESTOrderTotal> orderTotals, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {

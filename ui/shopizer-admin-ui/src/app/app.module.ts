@@ -14,6 +14,7 @@ import { CustomerModule } from './dashboard/customer/customer.module';
 import { UserModule } from './dashboard/user/user.module';
 import { UserListModule } from './dashboard/user-list/user-list.module';
 import { OrderModule } from './dashboard/order/order.module';
+import { OrderListModule } from './dashboard/order-list/order-list.module';
 import { PasswordModule } from './dashboard/password/password.module';
 import { AlertModule } from './_directives/alert.module';
 import { AuthGuard } from './_guard/index';
@@ -43,6 +44,7 @@ import { CustomerComponent} from './dashboard/customer/customer.component';
     UserListModule,
     CustomerModule,
     OrderModule,
+    OrderListModule,
     PasswordModule,
     AlertModule
   ],
