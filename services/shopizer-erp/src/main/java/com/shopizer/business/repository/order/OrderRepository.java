@@ -7,5 +7,7 @@ import com.shopizer.business.entity.order.Order;
 
 @Repository
 public interface OrderRepository extends PagingAndSortingRepository<Order, String> {
+	
+	public Order findByNumber(Long id);
 
 }

@@ -170,6 +170,7 @@ export class OrderComponent implements OnInit {
         price.value = this.price;
         price.name = 'Sub total';
         price.type = 'SUBTOTAL';
+        price.variation = 'ADD';
         this.orderTotals.push(price);
         
         if(this.installation != null && this.installation !='') {
@@ -177,6 +178,7 @@ export class OrderComponent implements OnInit {
             installation.value = this.installation;
             installation.name = 'Installation';
             installation.type = 'INSTALLATION';
+            installation.variation = 'ADD';
             this.orderTotals.push(installation);
         }
         
@@ -185,7 +187,7 @@ export class OrderComponent implements OnInit {
             deposit.value = this.deposit;
             deposit.name = 'Deposit';
             deposit.type = 'DEPOSIT';
-            deposit.variation ='-';
+            deposit.variation ='SUBSTRACT';
             this.orderTotals.push(deposit);
         }
         
@@ -288,28 +290,28 @@ export class OrderComponent implements OnInit {
         
         console.log('Submited order -> ' + JSON.stringify(this.order));
 
-        //if(this.order.id == null || this.order.id == '') {
-        //    this.orderService.create(this.order)
-        //            .subscribe(
-        //                order => {
-        //                    this.orderId = order.id;
-        //                    console.log('Created ordr id ' + this.orderId);
-        //            }, //Bind to view
+        if(this.order.id == null || this.order.id == '') {
+            this.orderService.create(this.order)
+                    .subscribe(
+                        order => {
+                            this.orderId = order.id;
+                            this.order.id = order.id;
+                            console.log('Created ordr id ' + this.orderId);
+                    }, //Bind to view
     
-        //                    error =>{ this.errorMessage = <any>error, console.log('Error while creating order ' + this.errorMessage)
-        //            })
-        //} else {
-        //    this.orderService.save(this.order)
-        //    .subscribe(
-        //        order => {
-         //           this.orderId = order.id;
+                            error =>{ this.errorMessage = <any>error, console.log('Error while creating order ' + this.errorMessage)
+                    })
+        } else {
+            this.orderService.save(this.order)
+            .subscribe(
+                order => {
+                    this.orderId = order.id;
+                    console.log('Saved order id ' + this.orderId);
+                }, //Bind to view
 
-         //           console.log('Saved order id ' + this.orderId);
-         //   }, //Bind to view
-
-          //          error =>{ this.errorMessage = <any>error, console.log('Error while saving order ' + this.errorMessage)
-          //  })
-        //}
+                    error =>{ this.errorMessage = <any>error, console.log('Error while saving order ' + this.errorMessage)
+            })
+        }
     }
      
     isNumeric(n): boolean {

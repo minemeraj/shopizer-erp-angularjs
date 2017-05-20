@@ -14,7 +14,7 @@ public class DateUtil {
 	private Date endDate = new Date(new Date().getTime());
 	private static final Logger LOGGER = LoggerFactory.getLogger(DateUtil.class);
 	private final static String LONGDATE_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
-	private final static String SHORT_DATE = "YYYY-MM-DD";
+	private final static String SHORT_DATE = "yyyy-MM-dd";
 
 	
 	
@@ -77,6 +77,9 @@ public class DateUtil {
 	}
 
 	public static Date getDate(String date) throws Exception {
+		if(date == null) {
+			return null;
+		}
 		DateFormat myDateFormat = new SimpleDateFormat(SHORT_DATE);
 		return myDateFormat.parse(date);
 	}

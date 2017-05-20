@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.http.HttpHeaders;
@@ -63,17 +64,24 @@ public class OrderController {
 	public ResponseEntity<RESTOrder> createOrder(@Valid @RequestBody RESTOrder order, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
 
 
+		if(!CollectionUtils.isEmpty(order.getOrderTotals())) {
+			BigDecimal ot = this.calculateTotal(order.getOrderTotals());
+			order.setTotal(ot.toString());
+		}
+
 		Order o = orderPopulator.populateModel(order, locale);
 		
-		//check if customer exists
-		Order lookupOrder = orderRepository.findOne(o.getId());
-		if(lookupOrder != null) {
-			throw new Exception("Order with id " + o.getId() + " already exists, use the update method");
+		//check if order exists
+		if(o.getNumber() != null) {
+			Order lookupOrder = orderRepository.findByNumber(o.getNumber());
+			if(lookupOrder != null) {
+				throw new Exception("Order with number " + o.getNumber().longValue()+ " already exists, use the update method");
+			}
 		}
 		
-		//TODO calculate order total
-		
-		o.setCreated(new Date());
+		if(o.getCreated() == null) {
+			o.setCreated(new Date());
+		}
 		orderRepository.save(o);
 		
 		RESTOrder restOrder = orderPopulator.populateWeb(o, locale);
@@ -88,6 +96,12 @@ public class OrderController {
 	@PutMapping("/api/order/{id}")
 	public ResponseEntity<RESTOrder> updateOrder(@PathVariable String id, @Valid @RequestBody RESTOrder order, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
 
+		
+		if(!CollectionUtils.isEmpty(order.getOrderTotals())) {
+			BigDecimal ot = this.calculateTotal(order.getOrderTotals());
+			order.setTotal(ot.toString());
+		}
+		
 		Order o = orderPopulator.populateModel(order, locale);
 		
 		o.setModified(new Date());
@@ -125,7 +139,27 @@ public class OrderController {
 
 
 		Validate.notNull(orderTotals, "Requires a list of order total to calculate price");
+		BigDecimal orderTotal = this.calculateTotal(orderTotals);
 		
+		//prepare display
+		NumberFormat totalFormat = NumberFormat.getCurrencyInstance(Locale.US);
+		totalFormat.setMinimumFractionDigits( 2 );
+		totalFormat.setMaximumFractionDigits( 2 );
+		
+		String totalText = totalFormat.format(orderTotal.doubleValue());
+
+		RESTTotal restTotal = new RESTTotal();
+		restTotal.setTotal(totalText);
+
+
+		return new ResponseEntity<RESTTotal>(restTotal, HttpStatus.OK);
+
+		
+	}
+	
+	private BigDecimal calculateTotal(List<RESTOrderTotal> orderTotals) throws Exception {
+		
+		Validate.notNull(orderTotals,"orderTotals is null");
 		BigDecimal orderTotal = new BigDecimal(0);
 		orderTotal.setScale(2, RoundingMode.HALF_EVEN);
 		
@@ -154,19 +188,7 @@ public class OrderController {
 			
 		}
 		
-		//prepare display
-		NumberFormat totalFormat = NumberFormat.getCurrencyInstance(Locale.US);
-		totalFormat.setMinimumFractionDigits( 2 );
-		totalFormat.setMaximumFractionDigits( 2 );
-		
-		String totalText = totalFormat.format(orderTotal.doubleValue());
-
-		RESTTotal restTotal = new RESTTotal();
-		restTotal.setTotal(totalText);
-
-
-		return new ResponseEntity<RESTTotal>(restTotal, HttpStatus.OK);
-
+		return orderTotal;
 		
 	}
 	

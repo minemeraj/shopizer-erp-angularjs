@@ -8,6 +8,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.shopizer.business.entity.common.Currency;
@@ -56,8 +57,12 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		target.setOrder(source.getOrder());
 		target.setCreator(source.getCreator());
 		target.setLastUpdator(source.getLastUpdator());
-		target.setChannel(OrderChannelEnum.valueOf(source.getChannel()));
-		target.setStatus(OrderStatusEnum.valueOf(source.getStatus()));
+		if(!StringUtils.isBlank(source.getChannel())) {
+			target.setChannel(OrderChannelEnum.valueOf(source.getChannel()));
+		}
+		if(!StringUtils.isBlank(source.getStatus())) {
+			target.setStatus(OrderStatusEnum.valueOf(source.getStatus()));
+		}
 		
 		BigDecimal total = priceService.toPrice(source.getTotal());
 		target.setTotal(total);
@@ -90,6 +95,10 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 			target.setCreated(DateUtil.getDate(source.getCreated()));
 		}
 		
+		if(source.getEstimated() != null) {
+			target.setEstimated(DateUtil.getDate(source.getEstimated()));
+		}
+		
 		
 		target.setCode(String.valueOf(source.getNumber()));
 		return target;
@@ -108,8 +117,15 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		target.setDescription(source.getDescription());
 		target.setNumber(source.getNumber());
 		target.setOrder(source.getOrder());
-		target.setChannel(source.getChannel().name());
-		target.setStatus(source.getStatus().name());
+		if(source.getChannel() != null) {
+			target.setChannel(source.getChannel().name());
+		}
+		if(source.getChannel() != null) {
+			target.setStatus(source.getStatus().name());
+		}
+		
+		//target.setChannel(source.getChannel().name());
+		//target.setStatus(source.getStatus().name());
 		target.setCreator(source.getCreator());
 		target.setLastUpdator(source.getLastUpdator());
 		
@@ -147,6 +163,10 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 
 		if(source.getCreated() != null) {
 			target.setCreated(DateUtil.formatDate(source.getCreated()));
+		}
+		
+		if(source.getEstimated() != null) {
+			target.setEstimated(DateUtil.formatDate(source.getEstimated()));
 		}
 		
 

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.shopizer.business.entity.common.Currency;
@@ -29,8 +30,12 @@ public class OrderTotalPopulator implements DataPopulator<RESTOrderTotal, OrderT
 		target.setId(source.getId());
 		target.setName(source.getName());
 		target.setOrder(source.getOrder());
-		target.setType(OrderTotalTypeEnum.valueOf(source.getType()));
-		target.setVariation(OrderTotalVariationEnum.valueOf(source.getVariation()));
+		if(!StringUtils.isEmpty(source.getType())) {
+			target.setType(OrderTotalTypeEnum.valueOf(source.getType()));
+		}
+		if(!StringUtils.isEmpty(source.getVariation())) {
+			target.setVariation(OrderTotalVariationEnum.valueOf(source.getVariation()));
+		}
 		
 		
 		BigDecimal price = priceService.toPrice(source.getValue());
@@ -53,8 +58,12 @@ public class OrderTotalPopulator implements DataPopulator<RESTOrderTotal, OrderT
 		String price = priceService.formatAmountWithCurrency(c, source.getValue(), locale);
 		
 		orderTotal.setValue(price);
-		orderTotal.setType(source.getName());
-		orderTotal.setVariation(source.getVariation().name());
+		if(source.getType() != null) {
+			orderTotal.setType(source.getName());
+		}
+		if(source.getVariation() != null) {
+			orderTotal.setVariation(source.getVariation().name());
+		}
 		
 		return orderTotal;
 		
