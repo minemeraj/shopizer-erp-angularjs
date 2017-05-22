@@ -101,10 +101,19 @@ export class UserComponent implements OnInit {
                     //            error => this.errorMessage = <any>error
                     //           );
         } else {
-            
+            console.log("******** User FORM SUBMITTED update ********");
+            console.log('Checking admin flag ' + this.isAdmin);
+            var index = this.permissions.indexOf('admin');
+            console.log('Check admin permissions' + index);
             if(this.isAdmin == false) {
-                var index = this.permissions.indexOf('admin');
+                console.log('No check admin');
                 this.permissions.splice(index, 1);
+            } else {
+
+                if(index == -1) {
+                    console.log('Not admin');
+                    this.permissions.push('admin');
+                }
             }
             this.userService.save(this.user)
             .subscribe(

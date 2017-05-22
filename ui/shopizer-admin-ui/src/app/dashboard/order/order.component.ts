@@ -25,12 +25,13 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 export class OrderComponent implements OnInit {
 
     errorMessage: String;
-    orderId : string;
+    orderId : string;//submitted in the parameters
     
     submitted = false;
+    orderSaved : string;
     
     active = true;
-    orderNumber : number;//id of the order
+    orderNumber : string;//number of the order
     
     price : string;
     installation : string;
@@ -70,12 +71,10 @@ export class OrderComponent implements OnInit {
         this.date = new Date();
         this.minDate = new Date();
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        //let datePipe = new DatePipe();
-        //this.order.created = datePipe.transform(this.date, 'yyyy-MM-dd');
         this.order.status = 'CREATED';
         this.order.creator = this.currentUser.firstName + ' ' + this.currentUser.lastName;
         this.today = this.datePipe.transform(this.date, 'yyyy-MM-dd');
-        console.log('Today date ' + this.today);
+        //console.log('Today date ' + this.today);
         this.order.created = this.today;
     }
     
@@ -92,10 +91,9 @@ export class OrderComponent implements OnInit {
                 this.getCustomer(customerId);
             }
             
-            let orderId = params['orderId'];
+            let orderId = params['id'];
             if(orderId != null) {
-                //this.getOrder(id);
-                //populate formOrder
+                this.getOrder(orderId);
             } else {
                 console.log('Before get order number ');
                 this.getOrderNumber();
@@ -115,7 +113,7 @@ export class OrderComponent implements OnInit {
         if(this.commentText != null && this.commentText != '') {
             //console.log('Comments are ' + this.commentText);
             var c = new OrderComment();
-            c.user = this.order.creator;
+            c.user = this.currentUser.firstName + ' ' + this.currentUser.lastName;
             c.comment = this.commentText;
             c.created = this.today;;
             this.orderComments.push(c);
@@ -138,12 +136,16 @@ export class OrderComponent implements OnInit {
                 })
     }
     
+    /**
+     * Create an order number
+     */
     getOrderNumber() {
         this.orderService.nextOrderId()
             .subscribe(
                     OrderId => {
+                console.log('New order id ' + OrderId.value);
                 this.orderNumber = OrderId.value;
-                this.order.number = OrderId.value;
+                this.order.orderNumber = OrderId.value;
 
             }, //Bind to view
                         err => {
@@ -229,6 +231,36 @@ export class OrderComponent implements OnInit {
         .subscribe(
                 order => {
                 this.order = order;
+                //let n = order.number.toString();
+                this.orderNumber = order.orderNumber;
+  
+                this.customer = order.customer;
+                this.orderComments = order.comments;
+                
+                if(this.orderComments == null) {
+                    this.orderComments = [];
+                }
+  
+                let orderTotals = order.orderTotals;
+  
+                    
+                console.log('Get order -> ' + JSON.stringify(order));
+                for (let i = 0; i < orderTotals.length; i++) {
+                   console.log('Order total ' +  orderTotals[i].type + ' - ' + orderTotals[i].value);
+                    //text += cars[i] + "<br>";
+                   if(orderTotals[i].type == 'SUBTOTAL') {
+                       this.price = orderTotals[i].value;
+                   }
+                   if(orderTotals[i].type == 'INSTALLATION') {
+                       this.installation = orderTotals[i].value;
+                   }
+                   if(orderTotals[i].type == 'DEPOSIT') {
+                       this.deposit = orderTotals[i].value;
+                   }
+                 }     
+
+                 this.total = '$' + order.total;
+                 this.totalsChanged();
 
             }, //Bind to view
                         err => {
@@ -239,12 +271,13 @@ export class OrderComponent implements OnInit {
     
      onSubmit(value: any, event: Event):void{
         this.errorMessage = null;
+        this.orderSaved = null;
         event.preventDefault();
         //console.log("******** FORM SUBMITTED ********");
         this.submitted = true;
 
         this.order.customer = this.customer;
-        this.order.number = this.orderNumber;
+        this.order.orderNumber = this.orderNumber;
         this.order.comments = this.orderComments;
          
         //console.log('Order -> ' + JSON.stringify(this.order));
@@ -296,17 +329,21 @@ export class OrderComponent implements OnInit {
                         order => {
                             this.orderId = order.id;
                             this.order.id = order.id;
-                            console.log('Created ordr id ' + this.orderId);
+                            console.log('Created order id ' + this.orderId);
+                            this.orderSaved = this.order.created;
                     }, //Bind to view
     
                             error =>{ this.errorMessage = <any>error, console.log('Error while creating order ' + this.errorMessage)
                     })
         } else {
+            this.order.modified = this.today;
+            this.order.lastUpdator = this.currentUser.firstName + ' ' + this.currentUser.lastName;
             this.orderService.save(this.order)
             .subscribe(
                 order => {
                     this.orderId = order.id;
                     console.log('Saved order id ' + this.orderId);
+                    this.orderSaved = this.order.modified;
                 }, //Bind to view
 
                     error =>{ this.errorMessage = <any>error, console.log('Error while saving order ' + this.errorMessage)
@@ -320,7 +357,7 @@ export class OrderComponent implements OnInit {
     
     buildForm(): void {
         this.orderForm = this.fb.group({
-          'number': [this.order.number, [
+          'number': [this.order.orderNumber, [
               Validators.required
             ]
           ],

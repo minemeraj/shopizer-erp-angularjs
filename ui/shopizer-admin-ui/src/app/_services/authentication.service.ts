@@ -28,6 +28,7 @@ export class AuthenticationService {
         return this.http.post(environment.baseUrl + '/login?' + params,'',options)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
+                localStorage.removeItem('currentUser');
                 console.log("LOGIN RESPONSE " + response);
                 let user = response.json();
                 console.log("USER " + user);
@@ -45,6 +46,7 @@ export class AuthenticationService {
  
     logout() {
         // remove user from local storage to log user out
+        console.log('Loggin out');
         localStorage.removeItem('currentUser');
     }
 }

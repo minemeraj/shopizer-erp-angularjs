@@ -10,6 +10,8 @@ public interface PriceService {
 	
 	BigDecimal toPrice(String price) throws Exception;
 	
+	String formatAmountNoCurrency(Currency currency, BigDecimal amount, Locale locale) throws Exception;
+	
 	String formatAmountWithCurrency(Currency currency, BigDecimal amount, Locale locale) throws Exception;
 
 }

@@ -53,7 +53,7 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		Order target = new Order();
 		target.setId(source.getId());
 		target.setDescription(source.getDescription());
-		target.setNumber(source.getNumber());
+		target.setNumber(Long.parseLong(source.getOrderNumber()));
 		target.setOrder(source.getOrder());
 		target.setCreator(source.getCreator());
 		target.setLastUpdator(source.getLastUpdator());
@@ -100,7 +100,7 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		}
 		
 		
-		target.setCode(String.valueOf(source.getNumber()));
+		target.setCode(String.valueOf(source.getOrderNumber()));
 		return target;
 		
 
@@ -115,12 +115,12 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		RESTOrder target = new RESTOrder();
 		target.setId(source.getId());
 		target.setDescription(source.getDescription());
-		target.setNumber(source.getNumber());
+		target.setOrderNumber(String.valueOf(source.getNumber()));
 		target.setOrder(source.getOrder());
 		if(source.getChannel() != null) {
 			target.setChannel(source.getChannel().name());
 		}
-		if(source.getChannel() != null) {
+		if(source.getStatus() != null) {
 			target.setStatus(source.getStatus().name());
 		}
 		
@@ -131,7 +131,7 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		
 		Currency CAD = new Currency("CAD");
 		
-		String total = priceService.formatAmountWithCurrency(CAD, source.getTotal(), locale);
+		String total = priceService.formatAmountNoCurrency(CAD, source.getTotal(), locale);
 		target.setTotal(total);
 		
 		if(!CollectionUtils.isEmpty(source.getOrderTotals())) {
@@ -163,6 +163,10 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 
 		if(source.getCreated() != null) {
 			target.setCreated(DateUtil.formatDate(source.getCreated()));
+		}
+		
+		if(source.getModified() != null) {
+			target.setModified(DateUtil.formatDate(source.getModified()));
 		}
 		
 		if(source.getEstimated() != null) {

@@ -8,9 +8,11 @@ import com.shopizer.restentity.customer.RESTCustomer;
 
 public class RESTOrder extends RESTEntity {
 
-	private Long number;
+	private String orderNumber;
 	
 	private String estimated;
+	
+	private String modified;
 	
 	private String created;
 	
@@ -33,14 +35,6 @@ public class RESTOrder extends RESTEntity {
 	private String status;
 	
 	private String channel;
-
-	public Long getNumber() {
-		return number;
-	}
-
-	public void setNumber(Long number) {
-		this.number = number;
-	}
 
 	public String getEstimated() {
 		return estimated;
@@ -136,6 +130,22 @@ public class RESTOrder extends RESTEntity {
 
 	public void setLastUpdator(String lastUpdator) {
 		this.lastUpdator = lastUpdator;
+	}
+
+	public String getModified() {
+		return modified;
+	}
+
+	public void setModified(String modified) {
+		this.modified = modified;
+	}
+
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
 	}
 
 }

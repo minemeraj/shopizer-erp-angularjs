@@ -21,6 +21,7 @@
       <thead>
       <tr>
         <th>Order number</th>
+        <th>Creation date</th>
         <th>Customer name</th>
         <th>Customer phone</th>
         <th>Customer email address</th>
@@ -33,8 +34,8 @@
 
       <tbody>
 		<tr *ngFor="let row of data let i = index" (click)="selectRow(i, row)">
-		        <td>{{row.number}}</td><td>{{row.customer.firstName}} {{row.customer.lastName}}</td><td>{{row.customer.phoneNumber}}</td><td>{{row.customer.emailAddress}}</td>
-		        <td>{{row.total}}</td>
+		        <td>{{row.orderNumber}}</td><td>{{row.created}}</td><td>{{row.customer.firstName}} {{row.customer.lastName}}</td><td>{{row.customer.phoneNumber}}</td><td>{{row.customer.emailAddress}}</td>
+		        <td>${{row.total}}</td>
 		        <td>{{row.status}}</td>
 		        <td>{{row.estimated}}</td>
 		        <td><a href="/dashboard/order;id={{row.id}}" class="btn btn-default">Edit</a>

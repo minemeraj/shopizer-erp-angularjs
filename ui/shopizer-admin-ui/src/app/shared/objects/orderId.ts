@@ -1,4 +1,4 @@
 export class OrderId {
     id : string;
-    value : number;
+    value : string;
 }

@@ -1,6 +1,8 @@
 package com.shopizer.business.services.price;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -13,8 +15,6 @@ import org.apache.commons.validator.routines.CurrencyValidator;
 import org.springframework.stereotype.Service;
 
 import com.shopizer.business.entity.common.Currency;
-import com.shopizer.business.entity.inventory.Price;
-import com.shopizer.business.entity.store.Store;
 
 @Service("priceService")
 public class PriceServiceImpl implements PriceService {
@@ -111,6 +111,21 @@ public class PriceServiceImpl implements PriceService {
 			return false;
 		}
 	}
+	
+	public String formatAmountNoCurrency(Currency currency, BigDecimal amount, Locale locale) throws Exception {
+		Validate.notNull(currency, "Currency must not be null");
+		Validate.notNull(amount,"amount must not be null");
+		
+		DecimalFormat df = new DecimalFormat("####.00");
+		
+		BigDecimal returnValue = new BigDecimal(amount.doubleValue());
+		returnValue.setScale(2, RoundingMode.HALF_EVEN);
+
+		
+		return df.format(returnValue.doubleValue());
+	}
+		
+		
 	
 	
 	public String formatAmountWithCurrency(Currency currency, BigDecimal amount, Locale locale) throws Exception {

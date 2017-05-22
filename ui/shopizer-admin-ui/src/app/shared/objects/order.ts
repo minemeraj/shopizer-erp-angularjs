@@ -4,7 +4,7 @@ import { OrderComment } from '../../shared/objects/orderComment';
 
 export class Order {
     id : string;
-    number : number;
+    orderNumber : string;
     estimated : string;
     created : string;
     modified : string;

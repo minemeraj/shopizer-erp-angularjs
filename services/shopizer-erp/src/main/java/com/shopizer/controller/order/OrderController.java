@@ -3,6 +3,7 @@ package com.shopizer.controller.order;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,14 +31,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.shopizer.business.entity.customer.Customer;
 import com.shopizer.business.entity.order.Order;
 import com.shopizer.business.entity.order.OrderTotalTypeEnum;
 import com.shopizer.business.repository.order.OrderRepository;
 import com.shopizer.business.services.order.OrderIdService;
 import com.shopizer.restentity.common.RESTList;
 import com.shopizer.restentity.common.RESTValue;
-import com.shopizer.restentity.customer.RESTCustomer;
 import com.shopizer.restentity.order.RESTOrder;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restentity.order.RESTTotal;
@@ -57,15 +56,15 @@ public class OrderController {
 
 	
 	@GetMapping("/api/order/nextOrderId")
-	public ResponseEntity<RESTValue<Long>> nextOrderId(Locale locale) throws Exception {
+	public ResponseEntity<RESTValue<String>> nextOrderId(Locale locale) throws Exception {
 		
 		long orderId = orderIdService.nextOderId();
 		
-		RESTValue<Long> restValue= new RESTValue<Long>();
-		restValue.setValue(orderId);
+		RESTValue<String> restValue= new RESTValue<String>();
+		restValue.setValue(String.valueOf(orderId));
 		
 		HttpHeaders headers = new HttpHeaders();
-		return new ResponseEntity<RESTValue<Long>>(restValue, headers, HttpStatus.OK);
+		return new ResponseEntity<RESTValue<String>>(restValue, headers, HttpStatus.OK);
 		
 	}
 	
@@ -153,11 +152,24 @@ public class OrderController {
 		if(size > 0) {
 			Pageable pageable = new PageRequest(page,size,new Sort(new org.springframework.data.domain.Sort.Order(Direction.DESC, "created")));
 			Page<Order> orders = orderRepository.findAll(pageable);
-			RESTList returnList = new RESTList(orders.getContent(), orders.getSize());
+			List<RESTOrder> restOrders = new ArrayList<RESTOrder>();
+			for(Order o : orders) {
+				RESTOrder ro = orderPopulator.populateWeb(o, locale);
+				restOrders.add(ro);
+			}
+			
+			RESTList returnList = new RESTList(restOrders, restOrders.size());
 			return new ResponseEntity<RESTList<RESTOrder>>(returnList, headers, HttpStatus.OK);
 		} else {
 			List<Order> c = (List<Order>) orderRepository.findAll();
-			RESTList returnList = new RESTList(c, c.size());
+			
+			List<RESTOrder> restOrders = new ArrayList<RESTOrder>();
+			for(Order o : c) {
+				RESTOrder ro = orderPopulator.populateWeb(o, locale);
+				restOrders.add(ro);
+			}
+			
+			RESTList returnList = new RESTList(restOrders, restOrders.size());
 			return new ResponseEntity<RESTList<RESTOrder>>(returnList, headers, HttpStatus.OK);
 		}
 

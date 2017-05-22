@@ -55,11 +55,11 @@ public class OrderTotalPopulator implements DataPopulator<RESTOrderTotal, OrderT
 		
 		Currency c = new Currency("CAD");
 		
-		String price = priceService.formatAmountWithCurrency(c, source.getValue(), locale);
+		String price = priceService.formatAmountNoCurrency(c, source.getValue(), locale);
 		
 		orderTotal.setValue(price);
 		if(source.getType() != null) {
-			orderTotal.setType(source.getName());
+			orderTotal.setType(source.getType().name());
 		}
 		if(source.getVariation() != null) {
 			orderTotal.setVariation(source.getVariation().name());
