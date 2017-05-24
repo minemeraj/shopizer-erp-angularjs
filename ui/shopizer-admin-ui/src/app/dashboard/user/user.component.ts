@@ -26,6 +26,7 @@ export class UserComponent implements OnInit {
     password : string;
     repeatPassword : string;
     isAdmin : boolean;
+    isNotifiable : boolean;
     
     userForm : FormGroup;//form
     
@@ -62,6 +63,10 @@ export class UserComponent implements OnInit {
                 if(this.permissions.indexOf('admin') != -1) {
                     this.isAdmin = true;
                 }
+                
+                if(this.permissions.indexOf('intern') != -1) {
+                    this.isNotifiable = true;
+                }
 
             }, //Bind to view
                         err => {
@@ -82,6 +87,9 @@ export class UserComponent implements OnInit {
             this.permissions.push('user');
             if(this.isAdmin == true) {
                 this.permissions.push('admin');
+            }
+            if(this.isNotifiable == true) {
+                this.permissions.push('intern');
             }
             this.user.permissions = this.permissions;
             this.user.password = this.password;
@@ -105,16 +113,29 @@ export class UserComponent implements OnInit {
             console.log('Checking admin flag ' + this.isAdmin);
             var index = this.permissions.indexOf('admin');
             console.log('Check admin permissions' + index);
+            
+            //set admin permission
             if(this.isAdmin == false) {
                 console.log('No check admin');
                 this.permissions.splice(index, 1);
             } else {
-
                 if(index == -1) {
                     console.log('Not admin');
                     this.permissions.push('admin');
                 }
             }
+            
+            //set intern permission
+            var intern = this.permissions.indexOf('intern');
+            if(this.isNotifiable == false) {
+                this.permissions.splice(intern, 1);
+            } else {
+                if(intern == -1) {
+                    console.log('Not notifiable');
+                    this.permissions.push('intern');
+                }
+            }
+            
             this.userService.save(this.user)
             .subscribe(
                 user => {

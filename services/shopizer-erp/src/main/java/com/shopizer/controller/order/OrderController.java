@@ -34,7 +34,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.shopizer.business.entity.order.Order;
 import com.shopizer.business.entity.order.OrderTotalTypeEnum;
 import com.shopizer.business.repository.order.OrderRepository;
-import com.shopizer.business.services.order.OrderIdService;
+import com.shopizer.business.services.order.OrderService;
 import com.shopizer.restentity.common.RESTList;
 import com.shopizer.restentity.common.RESTValue;
 import com.shopizer.restentity.order.RESTOrder;
@@ -49,7 +49,7 @@ public class OrderController {
 	private OrderPopulator orderPopulator;
 	
 	@Inject
-	private OrderIdService orderIdService;
+	private OrderService orderIdService;
 	
 	@Inject
 	private OrderRepository orderRepository;

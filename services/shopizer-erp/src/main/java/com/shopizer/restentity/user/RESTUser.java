@@ -10,6 +10,7 @@ public class RESTUser extends RESTEntity {
 	private String lastName;
 	private String userName;
 	private List<String> permissions;
+	private List<String> roles;
 	private String token;
 	private String password;
 	
@@ -49,6 +50,12 @@ public class RESTUser extends RESTEntity {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public List<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }
