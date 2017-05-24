@@ -306,8 +306,8 @@
 			<tabset> <tab heading="Static title">Static content</tab> <tab
 				*ngFor="let tabz of tabs" [heading]="tabz.title"
 				[active]="tabz.active" (select)="tabz.active = true"
-				(deselect)="tabz.active = false" [disabled]="tabz.disabled"
-				[removable]="tabz.removable" (removed)="removeTabHandler(tabz)">
+				(deselect)="tabz.active = false" [disabled]="tabz.disabled">
+				<!--[removable]="tabz.removable" (removed)="removeTabHandler(tabz)">-->
 			{{tabz?.content}} </tab> <tab (select)="alertMe()"> <template
 				tabHeading> <i class="glyphicon glyphicon-bell"></i>
 			Alert! </template> I've got an HTML heading, and a select callback. Pretty cool!
