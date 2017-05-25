@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.shopizer.business.entity.order.Order;
+import com.shopizer.business.entity.order.OrderStatusEnum;
+import com.shopizer.business.entity.order.OrderStatusHistory;
 import com.shopizer.business.entity.order.OrderTotalTypeEnum;
 import com.shopizer.business.repository.order.OrderRepository;
 import com.shopizer.business.services.order.OrderService;
@@ -90,6 +92,12 @@ public class OrderController {
 		if(o.getCreated() == null) {
 			o.setCreated(new Date());
 		}
+		
+		OrderStatusHistory initialStatus = new OrderStatusHistory();
+		initialStatus.setCreated(new Date());
+		initialStatus.setUser(order.getCreator());
+		initialStatus.setStatus(OrderStatusEnum.valueOf(order.getStatus()));
+		
 		orderRepository.save(o);
 		
 		RESTOrder restOrder = orderPopulator.populateWeb(o, locale);
@@ -110,7 +118,26 @@ public class OrderController {
 			order.setTotal(ot.toString());
 		}
 		
+		//fetch existing id
+		Order lookupOrder = orderRepository.findOne(id);
 		Order o = orderPopulator.populateModel(order, locale);
+		
+		List<OrderStatusHistory> existingHistory = lookupOrder.getStatusHistory();
+		
+		//compare new status with existing status
+		if((lookupOrder.getStatus() != null && o.getStatus() != null) && !(lookupOrder.getStatus().name().equals(o.getStatus().name()))) {
+			OrderStatusHistory anotherStatus = new OrderStatusHistory();
+			anotherStatus.setCreated(new Date());
+			anotherStatus.setUser(order.getLastUpdator());
+			anotherStatus.setStatus(OrderStatusEnum.valueOf(order.getStatus()));
+			if(existingHistory == null) {
+				existingHistory = new ArrayList<OrderStatusHistory>();
+				existingHistory.add(anotherStatus);
+			}
+			o.setStatusHistory(existingHistory);
+		}
+		
+		
 		
 		o.setModified(new Date());
 		orderRepository.save(o);

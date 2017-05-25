@@ -24,6 +24,8 @@ public class Order extends Entity {
 	
 	private List<OrderComment> comments;
 	
+	private List<OrderStatusHistory> statusHistory;
+	
 	private BigDecimal total;
 	
 	private String description;
@@ -122,6 +124,14 @@ public class Order extends Entity {
 
 	public void setLastUpdator(String lastUpdator) {
 		this.lastUpdator = lastUpdator;
+	}
+
+	public List<OrderStatusHistory> getStatusHistory() {
+		return statusHistory;
+	}
+
+	public void setStatusHistory(List<OrderStatusHistory> statusHistory) {
+		this.statusHistory = statusHistory;
 	}
 
 

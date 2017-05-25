@@ -28,6 +28,8 @@ public class RESTOrder extends RESTEntity {
 	
 	private List<RESTOrderComment> comments;
 	
+	private List<RESTOrderStatusHistory> orderStatusHistory;
+	
 	private String total;
 	
 	private String description;
@@ -146,6 +148,14 @@ public class RESTOrder extends RESTEntity {
 
 	public void setOrderNumber(String orderNumber) {
 		this.orderNumber = orderNumber;
+	}
+
+	public List<RESTOrderStatusHistory> getOrderStatusHistory() {
+		return orderStatusHistory;
+	}
+
+	public void setOrderStatusHistory(List<RESTOrderStatusHistory> orderStatusHistory) {
+		this.orderStatusHistory = orderStatusHistory;
 	}
 
 }

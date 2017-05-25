@@ -17,12 +17,14 @@ import com.shopizer.business.entity.order.Order;
 import com.shopizer.business.entity.order.OrderChannelEnum;
 import com.shopizer.business.entity.order.OrderComment;
 import com.shopizer.business.entity.order.OrderStatusEnum;
+import com.shopizer.business.entity.order.OrderStatusHistory;
 import com.shopizer.business.entity.order.OrderTotal;
 import com.shopizer.business.repository.customer.CustomerRepository;
 import com.shopizer.business.services.price.PriceService;
 import com.shopizer.restentity.customer.RESTCustomer;
 import com.shopizer.restentity.order.RESTOrder;
 import com.shopizer.restentity.order.RESTOrderComment;
+import com.shopizer.restentity.order.RESTOrderStatusHistory;
 import com.shopizer.restentity.order.RESTOrderTotal;
 import com.shopizer.restpopulators.DataPopulator;
 import com.shopizer.restpopulators.customer.CustomerPopulator;
@@ -40,6 +42,9 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 	
 	@Inject
 	private OrderCommentPopulator orderCommentPopulator;
+	
+	@Inject
+	private OrderStatusHistoryPopulator orderStatusHistoryPopulator;
 	
 	@Inject
 	private CustomerPopulator customerPopulator;
@@ -83,6 +88,15 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 				comments.add(orderComment);
 			}
 			target.setComments(comments);
+		}
+		
+		if(!CollectionUtils.isEmpty(source.getOrderStatusHistory())) {
+			List<OrderStatusHistory> statusHistory = new ArrayList<OrderStatusHistory>();
+			for(RESTOrderStatusHistory os : source.getOrderStatusHistory()) {
+				OrderStatusHistory history = orderStatusHistoryPopulator.populateModel(os, locale);
+				statusHistory.add(history);
+			}
+			target.setStatusHistory(statusHistory);
 		}
 		
 		target.setTotal(total);
@@ -150,6 +164,15 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 				comments.add(orderComment);
 			}
 			target.setComments(comments);
+		}
+		
+		if(!CollectionUtils.isEmpty(source.getStatusHistory())) {
+			List<RESTOrderStatusHistory> statusHistory = new ArrayList<RESTOrderStatusHistory>();
+			for(OrderStatusHistory os : source.getStatusHistory()) {
+				RESTOrderStatusHistory history = orderStatusHistoryPopulator.populateWeb(os, locale);
+				statusHistory.add(history);
+			}
+			target.setOrderStatusHistory(statusHistory);
 		}
 		
 		target.setTotal(total);
