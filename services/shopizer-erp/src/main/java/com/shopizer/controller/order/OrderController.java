@@ -97,6 +97,10 @@ public class OrderController {
 		initialStatus.setCreated(new Date());
 		initialStatus.setUser(order.getCreator());
 		initialStatus.setStatus(OrderStatusEnum.valueOf(order.getStatus()));
+		List<OrderStatusHistory> status = new ArrayList<OrderStatusHistory>();
+		status.add(initialStatus);
+		
+		o.setStatusHistory(status);
 		
 		orderRepository.save(o);
 		
@@ -134,6 +138,7 @@ public class OrderController {
 				existingHistory = new ArrayList<OrderStatusHistory>();
 				existingHistory.add(anotherStatus);
 			}
+			existingHistory.add(anotherStatus);
 			o.setStatusHistory(existingHistory);
 		}
 		
