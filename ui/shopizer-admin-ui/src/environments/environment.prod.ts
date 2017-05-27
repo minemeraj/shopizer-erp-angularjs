@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl : 'http://localhost:8080',
+  baseUrl : 'http://b.bamwood.ca:80',
   appName : 'BAM wood'
 };
