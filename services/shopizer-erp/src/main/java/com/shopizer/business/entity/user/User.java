@@ -24,6 +24,7 @@ public class User {
 	@Indexed(unique=true)
 	private String userName;
 	private String password;
+	private List<String> roles;
 	private List<String> permissions;
 	public String getFirstName() {
 		return firstName;
@@ -66,6 +67,12 @@ public class User {
 	}
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+	public List<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }

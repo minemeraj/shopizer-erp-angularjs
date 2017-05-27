@@ -43,7 +43,18 @@
 				<fieldset class="form-group">
 					<label>Repeat password</label> <input
 						class="form-control" placeholder="" name="repeatPassword" >
-				</fieldset>								
+				</fieldset>	
+				
+				<fieldset class="form-group">
+					<label>User has to be notified when order is ready</label>
+				    <!--<div *ngFor="let permission of permissions">-->
+				     <label>
+				            <input type="checkbox"
+				                   name="permission"
+				                   value="notifiable"
+				                   [(ngModel)]="isNotifiable"/>
+				      </label>
+				</fieldset>							
 				
 				<fieldset class="form-group">
 					<label>User is a system administrator</label>

@@ -12,7 +12,7 @@ import { KeyValue } from '../../shared/objects/keyValue';
 import { OrderId } from '../../shared/objects/orderId';
 import { OrderComment } from '../../shared/objects/orderComment';
 import { OrderTotal } from '../../shared/objects/orderTotal';
-import {ReferencesService,CustomerService, OrderService} from '../../_services/index';
+import {ReferencesService,CustomerService, OrderService, UserService} from '../../_services/index';
 import { AlertService} from '../../_services/index';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 
@@ -47,6 +47,7 @@ export class OrderComponent implements OnInit {
     commentText : string;
     orderComments : OrderComment[] = [];
     orderTotals : OrderTotal[] = [];
+    users : User[] = [];
     
     orderForm : FormGroup;//form
     
@@ -61,6 +62,7 @@ export class OrderComponent implements OnInit {
         private referencesService : ReferencesService,
         private customerService : CustomerService,
         private orderService : OrderService,
+        private userService : UserService,
         private alertService: AlertService,
         private activatedRoute: ActivatedRoute,
         private datePipe: DatePipe,
@@ -123,7 +125,8 @@ export class OrderComponent implements OnInit {
         
     }
     
-     getReferences(): void {
+    //order status
+    getReferences(): void {
         this.referencesService.getOrderReferences('fr')
             .subscribe(
                 references => {
@@ -133,7 +136,21 @@ export class OrderComponent implements OnInit {
                             err => {
                         // Log errors if any
                         console.log(err);
-                })
+          })
+    }
+    
+    //user list
+    getUsers(): void  {
+        
+        this.userService.getAll()
+        .subscribe(
+            users => {
+                this.users = users;
+            }, //Bind to view
+                        err => {
+                    // Log errors if any
+                    console.log(err);
+        })
     }
     
     /**

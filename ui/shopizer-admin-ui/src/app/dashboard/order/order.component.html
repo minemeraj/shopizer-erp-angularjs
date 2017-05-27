@@ -20,7 +20,7 @@
 				Email									Status
 				Phone									Created By
 				Address									Last Update
-				City
+				City									StatusHistory
 				Postal Code
 				Province, Country
 				
@@ -96,6 +96,18 @@
 							<td>Estimated </td>
 							<td>&nbsp;</td>
 							<td><input type="date" name="order.estimated" [(ngModel)]="order.estimated"/></td>
+						</tr>
+						<tr>
+							<td>Status history </td>
+							<td>&nbsp;</td>
+							<td>
+								<span *ngFor="let os of order.orderStatusHistory">
+									<p>
+					    				<strong>{{os.created}}</strong>&nbsp;-&nbsp;{{os.user}}<br/>
+					    				{{os.status}}
+					    			</p>
+								</span>
+							</td>
 						</tr>
 					</table>
 					
