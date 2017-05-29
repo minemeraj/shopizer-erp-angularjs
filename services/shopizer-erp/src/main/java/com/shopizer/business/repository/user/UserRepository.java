@@ -11,6 +11,6 @@ import com.shopizer.business.entity.user.User;
 public interface UserRepository extends MongoRepository<User, String> {
 	
 	User findByUserName(String userName);
-	List<User> findByPermissionsIn(List<String> permissions);
+	List<User> findByRolesIn(List<String> roles);
 
 }

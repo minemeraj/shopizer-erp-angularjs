@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
     
     
     permissions : string[] = [];
+    roles : string[] = [];
     errorMessage: String;
     userId : string;
     submitted = false;
@@ -59,12 +60,13 @@ export class UserComponent implements OnInit {
                 user => {
                 this.user = user;
                 this.permissions = user.permissions;
+                this.roles = user.roles;
                 
                 if(this.permissions.indexOf('admin') != -1) {
                     this.isAdmin = true;
                 }
                 
-                if(this.permissions.indexOf('intern') != -1) {
+                if(this.roles.indexOf('status-notifiable') != -1) {
                     this.isNotifiable = true;
                 }
 
@@ -89,7 +91,7 @@ export class UserComponent implements OnInit {
                 this.permissions.push('admin');
             }
             if(this.isNotifiable == true) {
-                this.permissions.push('intern');
+                this.roles.push('status-notifiable');
             }
             this.user.permissions = this.permissions;
             this.user.password = this.password;
@@ -126,13 +128,13 @@ export class UserComponent implements OnInit {
             }
             
             //set intern permission
-            var intern = this.permissions.indexOf('intern');
+            var notifiable = this.roles.indexOf('status-notifiable');
             if(this.isNotifiable == false) {
-                this.permissions.splice(intern, 1);
+                this.roles.splice(notifiable, 1);
             } else {
-                if(intern == -1) {
+                if(notifiable == -1) {
                     console.log('Not notifiable');
-                    this.permissions.push('intern');
+                    this.roles.push('status-notifiable');
                 }
             }
             

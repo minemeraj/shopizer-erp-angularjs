@@ -5,4 +5,5 @@ export class User {
   lastName : string;
   password : string;
   permissions : string[];
+  roles: string[];
 }

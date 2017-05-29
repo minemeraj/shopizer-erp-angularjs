@@ -102,6 +102,7 @@ public class OrderController {
 		
 		o.setStatusHistory(status);
 		
+		//TODO use service
 		orderRepository.save(o);
 		
 		RESTOrder restOrder = orderPopulator.populateWeb(o, locale);
@@ -145,6 +146,8 @@ public class OrderController {
 		
 		
 		o.setModified(new Date());
+		
+		//TODO use service
 		orderRepository.save(o);
 		
 		RESTOrder restOrder = orderPopulator.populateWeb(o, locale);
