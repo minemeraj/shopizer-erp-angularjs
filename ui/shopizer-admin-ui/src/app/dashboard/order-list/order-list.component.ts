@@ -63,7 +63,8 @@ export class OrderListComponent implements OnInit {
       //debugger
       let tableId: any = $('#order-list');
       this.tableWidget = tableId.DataTable({
-        select: true
+        select: true,
+        "lengthMenu": [ 50, 100, -1 ]
       });
     }
 
