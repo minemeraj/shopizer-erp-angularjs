@@ -20,7 +20,7 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
   selector: 'order-component',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.sass'],
-  providers: [CustomerService, OrderService, ReferencesService, DatePipe]
+  providers: [CustomerService, OrderService, ReferencesService, DatePipe, UserService]
 })
 export class OrderComponent implements OnInit {
 
