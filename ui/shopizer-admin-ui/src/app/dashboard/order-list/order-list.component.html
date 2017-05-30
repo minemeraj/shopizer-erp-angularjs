@@ -27,14 +27,14 @@
         <th>Customer email address</th>
         <th>Order total</th>
         <th>Order status</th>
-        <th>Order estimated</th>
+        <th>First estimation</th>
         <th>Edit</th>
       </tr>
       </thead>
 
       <tbody>
 		<tr *ngFor="let row of data let i = index" (click)="selectRow(i, row)">
-		        <td>{{row.orderNumber}}</td><td>{{row.created}}</td><td>{{row.customer.firstName}} {{row.customer.lastName}}</td><td>{{row.customer.phoneNumber}}</td><td>{{row.customer.emailAddress}}</td>
+		        <td><a href="/dashboard/order;id={{row.id}}" class="btn btn-default">{{row.orderNumber}}</a></td><td>{{row.created}}</td><td>{{row.customer.firstName}} {{row.customer.lastName}}</td><td>{{row.customer.phoneNumber}}</td><td>{{row.customer.emailAddress}}</td>
 		        <td>${{row.total}}</td>
 		        <td>{{row.status}}</td>
 		        <td>{{row.estimated}}</td>

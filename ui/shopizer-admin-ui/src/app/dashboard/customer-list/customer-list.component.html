@@ -30,11 +30,10 @@
 
       <tbody>
 		<tr *ngFor="let row of data let i = index" (click)="selectRow(i, row)">
-		        <td>{{row.firstName}}</td><td>{{row.lastName}}</td><td>{{row.phoneNumber}}</td><td>{{row.emailAddress}}</td><td><a href="/dashboard/customer;id={{row.id}}" class="btn btn-default">Edit</a>&nbsp;<a href="/dashboard/order;customerId={{row.id}}" class="btn btn-default">Create order</a></td>
-		        <!--
-		        <td>{{row.firstName}}</td>
-		        <td><input [(ngModel)]="row.lastName" style="color:black"></td>
-		        -->
+		        <td><a href="/dashboard/customer;id={{row.id}}" class="btn btn-default">{{row.firstName}}</a></td><td>{{row.lastName}}</td>
+		        <td>{{row.phoneNumber}}</td><td>{{row.emailAddress}}</td>
+		        <td><a href="/dashboard/customer;id={{row.id}}" class="btn btn-default">Edit</a>&nbsp;<a href="/dashboard/order;customerId={{row.id}}" class="btn btn-default">Create order</a></td>
+
 		</tr>
       </tbody>
     </table>

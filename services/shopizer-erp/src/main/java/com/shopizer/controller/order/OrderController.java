@@ -51,7 +51,7 @@ public class OrderController {
 	private OrderPopulator orderPopulator;
 	
 	@Inject
-	private OrderService orderIdService;
+	private OrderService orderService;
 	
 	@Inject
 	private OrderRepository orderRepository;
@@ -60,7 +60,7 @@ public class OrderController {
 	@GetMapping("/api/order/nextOrderId")
 	public ResponseEntity<RESTValue<String>> nextOrderId(Locale locale) throws Exception {
 		
-		long orderId = orderIdService.nextOderId();
+		long orderId = orderService.nextOderId();
 		
 		RESTValue<String> restValue= new RESTValue<String>();
 		restValue.setValue(String.valueOf(orderId));
@@ -101,9 +101,8 @@ public class OrderController {
 		status.add(initialStatus);
 		
 		o.setStatusHistory(status);
-		
-		//TODO use service
-		orderRepository.save(o);
+
+		orderService.save(o);
 		
 		RESTOrder restOrder = orderPopulator.populateWeb(o, locale);
 			
@@ -146,9 +145,8 @@ public class OrderController {
 		
 		
 		o.setModified(new Date());
-		
-		//TODO use service
-		orderRepository.save(o);
+
+		orderService.save(o);
 		
 		RESTOrder restOrder = orderPopulator.populateWeb(o, locale);
 			

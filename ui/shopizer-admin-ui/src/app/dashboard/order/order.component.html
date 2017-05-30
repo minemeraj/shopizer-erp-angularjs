@@ -16,7 +16,7 @@
 				<!-- 
 				
 				Customer								OrderID
-				First Name Last Name					Due Date
+				First Name Last Name					Order estimation date
 				Email									Status
 				Phone									Created By
 				Address									Last Update
@@ -93,9 +93,14 @@
 							<td><strong>{{order.modified}}</strong></td>
 						</tr>
 						<tr>
-							<td>Estimated </td>
+							<td>First estimation </td>
 							<td>&nbsp;</td>
 							<td><input type="date" name="order.estimated" [(ngModel)]="order.estimated"/></td>
+						</tr>
+						<tr>
+							<td>Delivery estimation </td>
+							<td>&nbsp;</td>
+							<td><input type="date" name="order.deliveryEstimated" [(ngModel)]="order.deliveryEstimated"/></td>
 						</tr>
 						<tr>
 							<td>Status history </td>

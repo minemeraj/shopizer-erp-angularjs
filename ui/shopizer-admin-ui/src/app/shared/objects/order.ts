@@ -7,6 +7,7 @@ export class Order {
     id : string;
     orderNumber : string;
     estimated : string;
+    deliveryEstimated : string;
     created : string;
     modified : string;
     creator : string;

@@ -17,6 +17,8 @@ public class Order extends Entity {
 	
 	private Date estimated;
 	
+	private Date deliveryEstimated;
+	
 	@DBRef(db="customer")
 	private Customer customer;
 	
@@ -132,6 +134,14 @@ public class Order extends Entity {
 
 	public void setStatusHistory(List<OrderStatusHistory> statusHistory) {
 		this.statusHistory = statusHistory;
+	}
+
+	public Date getDeliveryEstimated() {
+		return deliveryEstimated;
+	}
+
+	public void setDeliveryEstimated(Date deliveryEstimated) {
+		this.deliveryEstimated = deliveryEstimated;
 	}
 
 

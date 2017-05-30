@@ -11,6 +11,7 @@ public class RESTOrder extends RESTEntity {
 	private String orderNumber;
 	
 	private String estimated;
+	private String deliveryEstimated;
 	
 	private String modified;
 	
@@ -156,6 +157,14 @@ public class RESTOrder extends RESTEntity {
 
 	public void setOrderStatusHistory(List<RESTOrderStatusHistory> orderStatusHistory) {
 		this.orderStatusHistory = orderStatusHistory;
+	}
+
+	public String getDeliveryEstimated() {
+		return deliveryEstimated;
+	}
+
+	public void setDeliveryEstimated(String deliveryEstimated) {
+		this.deliveryEstimated = deliveryEstimated;
 	}
 
 }

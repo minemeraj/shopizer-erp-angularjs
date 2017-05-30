@@ -113,6 +113,10 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 			target.setEstimated(DateUtil.getDate(source.getEstimated()));
 		}
 		
+		if(source.getDeliveryEstimated() != null) {
+			target.setDeliveryEstimated(DateUtil.getDate(source.getDeliveryEstimated()));
+		}
+		
 		
 		target.setCode(String.valueOf(source.getOrderNumber()));
 		return target;
@@ -194,6 +198,10 @@ public class OrderPopulator implements DataPopulator<RESTOrder, Order> {
 		
 		if(source.getEstimated() != null) {
 			target.setEstimated(DateUtil.formatDate(source.getEstimated()));
+		}
+		
+		if(source.getDeliveryEstimated() != null) {
+			target.setDeliveryEstimated(DateUtil.formatDate(source.getDeliveryEstimated()));
 		}
 		
 

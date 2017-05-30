@@ -6,6 +6,6 @@ public interface OrderService {
 	
 	long nextOderId();
 	
-	Order saveOrder(Order order);
+	Order save(Order order) throws Exception;
 
 }
