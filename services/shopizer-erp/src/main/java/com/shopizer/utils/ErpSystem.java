@@ -19,8 +19,11 @@ import com.shopizer.business.repository.common.CurrencyRepository;
 @Component
 public class ErpSystem {
 	
-	@Value("${erp.locale}")
-	private String locale;
+	@Value("${erp.locale.lang}")
+	private String localeLang;
+	
+	@Value("${erp.locale.country}")
+	private String localeCountry;
 	
 	@Inject
 	private CurrencyRepository currencyRepository;
@@ -32,7 +35,7 @@ public class ErpSystem {
 	
 	public Locale getLocale() {
 		if(_l == null) {
-			_l = new Locale(locale);
+			_l = new Locale(localeLang.toLowerCase(),localeCountry.toUpperCase());
 			List<com.shopizer.business.entity.common.Currency> currencies =  currencyRepository.findAll();
 			for(com.shopizer.business.entity.common.Currency c : currencies) {
 				currencyMap.put(c.getCode(), c);

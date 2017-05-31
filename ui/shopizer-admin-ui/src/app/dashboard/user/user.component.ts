@@ -43,6 +43,9 @@ export class UserComponent implements OnInit {
     ) { }
     
     ngOnInit() {
+        
+        this.isNotifiable = false;
+        this.isAdmin = false;
         this.activatedRoute.params.subscribe((params: Params) => {
             let id = params['id'];
             if(id != null) {
@@ -66,7 +69,8 @@ export class UserComponent implements OnInit {
                     this.isAdmin = true;
                 }
                 
-                if(this.roles.indexOf('status-notifiable') != -1) {
+                if(this.roles != null && this.roles.indexOf('status-notifiable') != -1) {
+                    console.log('is notifiable');
                     this.isNotifiable = true;
                 }
 
@@ -83,6 +87,7 @@ export class UserComponent implements OnInit {
         this.user = value;
         this.user.password = this.password;
         this.user.permissions = this.permissions;
+        this.user.roles = this.roles;
         
         if(this.user.id == null || this.user.id == '') {
 
@@ -128,7 +133,14 @@ export class UserComponent implements OnInit {
             }
             
             //set intern permission
-            var notifiable = this.roles.indexOf('status-notifiable');
+            var notifiable = -1;
+            
+            if(this.roles != null) {
+                notifiable = this.roles.indexOf('status-notifiable');
+            } else {
+                this.roles = [];
+            }
+            
             if(this.isNotifiable == false) {
                 this.roles.splice(notifiable, 1);
             } else {
@@ -137,6 +149,8 @@ export class UserComponent implements OnInit {
                     this.roles.push('status-notifiable');
                 }
             }
+            
+            this.user.roles = this.roles;
             
             this.userService.save(this.user)
             .subscribe(

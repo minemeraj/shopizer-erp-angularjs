@@ -110,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
 		if(!CollectionUtils.isEmpty(notifiableRoles)) {
 			List<User> notifiableUsers = userRepository.findByRolesIn(notifiableRoles);
 			
-
+			try {
 			//prepare template
 			Map<String,String> tokens = new HashMap<String,String>();
 			tokens.put("SUBJECT", subject.toString());
@@ -130,7 +130,12 @@ public class OrderServiceImpl implements OrderService {
 			email.setTo(users);
 			email.setTemplateTokens(tokens);
 			
+			
 			htmlEmailSender.send(email);
+			
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
 			
 		}
 		

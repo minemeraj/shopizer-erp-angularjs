@@ -10,6 +10,7 @@ import { CustomerListRoutes } from './customer-list/customer-list.routes';
 import { CustomerRoutes } from './customer/customer.routes';
 import { OrderRoutes } from './order/order.routes';
 import { UserRoutes } from './user/user.routes';
+import { StatsRoutes } from './stats/stats.route';
 import { UserListRoutes } from './user-list/user-list.routes';
 import { OrderListRoutes } from './order-list/order-list.routes';
 import { PasswordRoutes } from './password/password.routes';
@@ -39,6 +40,7 @@ export const DashboardRoutes: Route[] = [
         ...OrderRoutes,
         ...OrderListRoutes,
         ...UserRoutes,
+        ...StatsRoutes,
         ...UserListRoutes,
         ...PasswordRoutes
       ]
