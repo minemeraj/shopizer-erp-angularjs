@@ -10,12 +10,14 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.shopizer.business.entity.order.Order;
 import com.shopizer.business.entity.order.OrderId;
 import com.shopizer.business.entity.order.OrderStatusEnum;
+import com.shopizer.business.entity.order.OrderStatusHistory;
 import com.shopizer.business.entity.order.OrderTotal;
 import com.shopizer.business.entity.order.OrderTotalTypeEnum;
 import com.shopizer.business.entity.user.User;
@@ -76,6 +78,45 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Order save(Order order) throws Exception {
+		
+		boolean statusChanged = false;
+		if(!StringUtils.isBlank(order.getId())) {
+		
+			Order lookupOrder = orderRepository.findOne(order.getId());
+			
+			
+			List<OrderStatusHistory> existingHistory = lookupOrder.getStatusHistory();
+			
+			//compare new status with existing status
+			if((lookupOrder.getStatus() != null && order.getStatus() != null) && !(lookupOrder.getStatus().name().equals(order.getStatus().name()))) {
+				OrderStatusHistory anotherStatus = new OrderStatusHistory();
+				anotherStatus.setCreated(new Date());
+				anotherStatus.setUser(order.getLastUpdator());
+				anotherStatus.setStatus(order.getStatus());
+				if(existingHistory == null) {
+					existingHistory = new ArrayList<OrderStatusHistory>();
+					existingHistory.add(anotherStatus);
+				}
+				existingHistory.add(anotherStatus);
+				order.setStatusHistory(existingHistory);
+				statusChanged = true;
+			}
+		
+		} else {
+			
+			//new order
+			statusChanged = true;
+			OrderStatusHistory initialStatus = new OrderStatusHistory();
+			initialStatus.setCreated(new Date());
+			initialStatus.setUser(order.getCreator());
+			initialStatus.setStatus(order.getStatus());
+			List<OrderStatusHistory> status = new ArrayList<OrderStatusHistory>();
+			status.add(initialStatus);
+			order.setStatusHistory(status);
+			
+		}
+
+		
 		orderRepository.save(order);
 		
 		List<String> notifiableRoles = new ArrayList<String>();
@@ -92,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 		
-		if(order.getStatus().name().equals(OrderStatusEnum.READY.name())) {
+		if(statusChanged && order.getStatus().name().equals(OrderStatusEnum.READY.name())) {
 
 			notifiableRoles.add("status-notifiable");
 			//TODO
@@ -100,7 +141,7 @@ public class OrderServiceImpl implements OrderService {
 			subject.append("Commande prête pour livraison " + DateUtil.formatDate(new Date()));
 		}
 		
-		if(order.getStatus().name().equals(OrderStatusEnum.CREATED.name())) {
+		if(statusChanged && order.getStatus().name().equals(OrderStatusEnum.CREATED.name())) {
 			notifiableRoles.add("status-notifiable");
 			//TODO
 			//subject not hard coded
@@ -111,28 +152,28 @@ public class OrderServiceImpl implements OrderService {
 			List<User> notifiableUsers = userRepository.findByRolesIn(notifiableRoles);
 			
 			try {
-			//prepare template
-			Map<String,String> tokens = new HashMap<String,String>();
-			tokens.put("SUBJECT", subject.toString());
-			tokens.put("NUMBER", String.valueOf(order.getNumber()));
-			tokens.put("SUBTOTAL", priceService.formatAmountWithCurrency(erpSystem.getSupportedCurrency(), subTotal, erpSystem.getLocale()));
-			tokens.put("DESCRIPTION", order.getDescription());
-			
-			Email email = new Email();
-			email.setFrom(fromEmail);
-			email.setFromEmail(fromEmail);
-			email.setTemplateName("status.tpl");
-			
-			List<String> users = new ArrayList<String>();
-			for(User user : notifiableUsers) {
-				users.add(user.getUserName());
-			}
-			email.setTo(users);
-			email.setTemplateTokens(tokens);
-			
-			
-			htmlEmailSender.send(email);
-			
+				//prepare template
+				Map<String,String> tokens = new HashMap<String,String>();
+				tokens.put("SUBJECT", subject.toString());
+				tokens.put("NUMBER", String.valueOf(order.getNumber()));
+				tokens.put("SUBTOTAL", priceService.formatAmountWithCurrency(erpSystem.getSupportedCurrency(), subTotal, erpSystem.getLocale()));
+				tokens.put("DESCRIPTION", order.getDescription());
+				
+				Email email = new Email();
+				email.setFrom(fromEmail);
+				email.setFromEmail(fromEmail);
+				email.setTemplateName("status.tpl");
+				
+				List<String> users = new ArrayList<String>();
+				for(User user : notifiableUsers) {
+					users.add(user.getUserName());
+				}
+				email.setTo(users);
+				email.setTemplateTokens(tokens);
+				
+				
+				htmlEmailSender.send(email);
+				
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			}

@@ -2,8 +2,10 @@ package com.shopizer.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +61,26 @@ public class DateUtil {
 		SimpleDateFormat format = new SimpleDateFormat(LONGDATE_FORMAT);
 		return format.format(date);
 		
+	}
+	
+	public static List<Date> datesBetween(Date d1, Date d2) {
+	    List<Date> ret = new ArrayList<Date>();
+	    Calendar c = Calendar.getInstance();
+	    Calendar c2 = Calendar.getInstance();
+	    c.setTime(d1);
+	    c.setTime(d2);
+	    int d1Month = c.get(Calendar.MONTH);
+	    int d12Month = c.get(Calendar.MONTH);
+	    ret.add(d1);
+	    while (c.getTimeInMillis() < d2.getTime()) {
+	        c.add(Calendar.MONTH, 1);
+	        ret.add(c.getTime());
+	    }
+	    
+	    if(d1Month != d12Month) {  
+	    	ret.add(d2);
+	    }
+	    return ret;
 	}
 
 	/**

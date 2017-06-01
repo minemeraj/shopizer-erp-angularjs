@@ -142,9 +142,7 @@ public class UserController {
 	@PutMapping("/api/user/{id}")
 	public ResponseEntity<RESTUser> updateUser(@PathVariable String id, @Valid @RequestBody RESTUser user, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
 
-		
-		User lookupUser = userRepository.findByUserName(user.getUserName());
-		
+
 		User u = userPopulator.populateModel(user, locale);
 
 

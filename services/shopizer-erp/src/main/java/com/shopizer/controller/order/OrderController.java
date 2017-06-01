@@ -93,14 +93,14 @@ public class OrderController {
 			o.setCreated(new Date());
 		}
 		
-		OrderStatusHistory initialStatus = new OrderStatusHistory();
+/*		OrderStatusHistory initialStatus = new OrderStatusHistory();
 		initialStatus.setCreated(new Date());
 		initialStatus.setUser(order.getCreator());
 		initialStatus.setStatus(OrderStatusEnum.valueOf(order.getStatus()));
 		List<OrderStatusHistory> status = new ArrayList<OrderStatusHistory>();
-		status.add(initialStatus);
+		status.add(initialStatus);*/
 		
-		o.setStatusHistory(status);
+		//o.setStatusHistory(status);
 
 		orderService.save(o);
 		
@@ -123,13 +123,13 @@ public class OrderController {
 		}
 		
 		//fetch existing id
-		Order lookupOrder = orderRepository.findOne(id);
+		//Order lookupOrder = orderRepository.findOne(id);
 		Order o = orderPopulator.populateModel(order, locale);
 		
-		List<OrderStatusHistory> existingHistory = lookupOrder.getStatusHistory();
+		//List<OrderStatusHistory> existingHistory = lookupOrder.getStatusHistory();
 		
 		//compare new status with existing status
-		if((lookupOrder.getStatus() != null && o.getStatus() != null) && !(lookupOrder.getStatus().name().equals(o.getStatus().name()))) {
+/*		if((lookupOrder.getStatus() != null && o.getStatus() != null) && !(lookupOrder.getStatus().name().equals(o.getStatus().name()))) {
 			OrderStatusHistory anotherStatus = new OrderStatusHistory();
 			anotherStatus.setCreated(new Date());
 			anotherStatus.setUser(order.getLastUpdator());
@@ -140,7 +140,7 @@ public class OrderController {
 			}
 			existingHistory.add(anotherStatus);
 			o.setStatusHistory(existingHistory);
-		}
+		}*/
 		
 		
 		
