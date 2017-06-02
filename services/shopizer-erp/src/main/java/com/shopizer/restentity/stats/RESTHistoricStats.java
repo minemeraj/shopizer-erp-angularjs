@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.shopizer.restentity.common.RESTKeyListValue;
 
-public class HistoricStats extends Stats {
+public class RESTHistoricStats extends Stats {
 	
 	private List<String> xAxis;
 	private List<RESTKeyListValue> yAxis;
