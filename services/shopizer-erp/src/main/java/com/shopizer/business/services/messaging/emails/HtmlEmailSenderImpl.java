@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.inject.Inject;
 import javax.mail.BodyPart;
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.InternetAddress;
@@ -16,9 +19,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailPreparationException;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
@@ -31,8 +34,10 @@ import freemarker.template.TemplateException;
 public class HtmlEmailSenderImpl implements HtmlEmailSender {
 	
 	private static final String CHARSET = "UTF-8";
-	private Configuration freemarkerMailConfiguration;
-	private JavaMailSender mailSender;
+	private JavaMailSenderImpl mailSender;
+	
+    @Inject
+    Configuration freemarkerConfiguration;
 	
 	@Value("${smtp.host}")
 	private String host;
@@ -62,28 +67,37 @@ public class HtmlEmailSenderImpl implements HtmlEmailSender {
 		final String subject = email.getSubject();
 		final String tmpl = email.getTemplateName();
 		final Map<String,String> templateTokens = email.getTemplateTokens();
+		
+		mailSender = new org.springframework.mail.javamail.JavaMailSenderImpl();
+		mailSender.setProtocol(protocol);
+		mailSender.setHost(host);
+		mailSender.setPort(Integer.parseInt(port));
+		mailSender.setUsername(username);
+		mailSender.setPassword(password);
+		
+		Properties prop = new Properties();
+		prop.put("mail.smtp.auth", smtpAuth);
+		prop.put("mail.smtp.starttls.enable", starttls);
+		mailSender.setJavaMailProperties(prop);
+
+		
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage)
 					throws MessagingException, IOException {
-				
-				JavaMailSenderImpl impl = (JavaMailSenderImpl)mailSender;
-				// if email configuration is present in Database, use the same
 
-				impl.setProtocol(protocol);
-				impl.setHost(host);
-				impl.setPort(Integer.parseInt(port));
-				impl.setUsername(username);
-				impl.setPassword(password);
-					
-				Properties prop = new Properties();
-				prop.put("mail.smtp.auth", smtpAuth);
-				prop.put("mail.smtp.starttls.enable", starttls);
-				impl.setJavaMailProperties(prop);
+				// if email configuration is present in Database, use the same
+				
+				Validate.notNull(email);
+				Validate.notEmpty(email.getTo());
 
 				//mimeMessage.addRecipient(type, address);
 				//TODO
 				//mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+				List<String> emailTos = email.getTo();
+				for(String toEmail : emailTos) {
+					mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+				}
 
 				InternetAddress inetAddress = new InternetAddress();
 
@@ -97,8 +111,9 @@ public class HtmlEmailSenderImpl implements HtmlEmailSender {
 
 				// Create a "text" Multipart message
 				BodyPart textPart = new MimeBodyPart();
-				freemarkerMailConfiguration.setClassForTemplateLoading(HtmlEmailSenderImpl.class, "/");
-				Template textTemplate = freemarkerMailConfiguration.getTemplate(new StringBuilder(TEMPLATE_PATH).append("").append("/").append(tmpl).toString());
+				//freemarkerMailConfiguration.setClassForTemplateLoading(HtmlEmailSenderImpl.class, "/");
+				String template = new StringBuilder(TEMPLATE_PATH).append("").append("/").append(tmpl).toString();
+				Template textTemplate = freemarkerConfiguration.getTemplate(tmpl);
 				final StringWriter textWriter = new StringWriter();
 				try {
 					textTemplate.process(templateTokens, textWriter);
@@ -134,8 +149,8 @@ public class HtmlEmailSenderImpl implements HtmlEmailSender {
 				// Create a "HTML" Multipart message
 				Multipart htmlContent = new MimeMultipart("related");
 				BodyPart htmlPage = new MimeBodyPart();
-				freemarkerMailConfiguration.setClassForTemplateLoading(HtmlEmailSenderImpl.class, "/");
-				Template htmlTemplate = freemarkerMailConfiguration.getTemplate(new StringBuilder(TEMPLATE_PATH).append("").append("/").append(tmpl).toString());
+				//freemarkerMailConfiguration.setClassForTemplateLoading(HtmlEmailSenderImpl.class, "/");
+				Template htmlTemplate = freemarkerConfiguration.getTemplate(tmpl);
 				final StringWriter htmlWriter = new StringWriter();
 				try {
 					htmlTemplate.process(templateTokens, htmlWriter);
@@ -177,22 +192,6 @@ public class HtmlEmailSenderImpl implements HtmlEmailSender {
 		};
 
 		mailSender.send(preparator);
-	}
-
-	public Configuration getFreemarkerMailConfiguration() {
-		return freemarkerMailConfiguration;
-	}
-
-	public void setFreemarkerMailConfiguration(Configuration freemarkerMailConfiguration) {
-		this.freemarkerMailConfiguration = freemarkerMailConfiguration;
-	}
-
-	public JavaMailSender getMailSender() {
-		return mailSender;
-	}
-
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
 	}
 
 }

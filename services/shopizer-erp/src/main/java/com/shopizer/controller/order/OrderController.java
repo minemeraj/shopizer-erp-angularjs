@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -183,9 +184,9 @@ public class OrderController {
 		HttpHeaders headers = new HttpHeaders();
 		
 		if(size > 0) {
-			Pageable pageable = new PageRequest(page,size,new Sort(new org.springframework.data.domain.Sort.Order(Direction.DESC, "created")));
+			Pageable pageable = new PageRequest(page,size,new Sort(new org.springframework.data.domain.Sort.Order(Direction.DESC, "number")));
 			Page<Order> orders = orderRepository.findAll(pageable);
-			List<RESTOrder> restOrders = new ArrayList<RESTOrder>();
+			List<RESTOrder> restOrders = new LinkedList<RESTOrder>();
 			for(Order o : orders) {
 				RESTOrder ro = orderPopulator.populateWeb(o, locale);
 				restOrders.add(ro);
@@ -194,7 +195,7 @@ public class OrderController {
 			RESTList returnList = new RESTList(restOrders, restOrders.size());
 			return new ResponseEntity<RESTList<RESTOrder>>(returnList, headers, HttpStatus.OK);
 		} else {
-			List<Order> c = (List<Order>) orderRepository.findAll();
+			List<Order> c = (List<Order>) orderRepository.findAllOrderByCreated();
 			
 			List<RESTOrder> restOrders = new ArrayList<RESTOrder>();
 			for(Order o : c) {

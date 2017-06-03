@@ -163,6 +163,7 @@ public class OrderServiceImpl implements OrderService {
 				email.setFrom(fromEmail);
 				email.setFromEmail(fromEmail);
 				email.setTemplateName("status.tpl");
+				email.setSubject(subject.toString());
 				
 				List<String> users = new ArrayList<String>();
 				for(User user : notifiableUsers) {
