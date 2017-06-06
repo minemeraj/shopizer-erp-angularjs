@@ -136,4 +136,12 @@ public class DateUtil {
 		return format.format(new Date(dt.getTime()));
 	}
 
+	
+	public static String getYearMonth(Date date) {
+
+
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+		return format.format(date.getTime());
+	}
+	
 }

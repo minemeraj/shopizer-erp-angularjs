@@ -79,6 +79,9 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order save(Order order) throws Exception {
 		
+		Date today = new Date();
+		order.setModified(today);
+		
 		boolean statusChanged = false;
 		if(!StringUtils.isBlank(order.getId())) {
 		

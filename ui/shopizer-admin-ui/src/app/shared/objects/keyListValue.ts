@@ -1,6 +1,7 @@
-export class KeyValue {
+import { KeyValue } from '../../shared/objects/keyValue';
+export class KeyListValue {
 
       key : string;
-      values : string[];
+      values : KeyValue[];
  
 }

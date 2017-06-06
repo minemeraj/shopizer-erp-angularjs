@@ -99,26 +99,6 @@ export class CustomerComponent implements OnInit {
                Validators.required                                  
             ]
           ],
-          'emailAddress': [this.customer.emailAddress, [
-               Validators.required                                  
-            ]
-          ],
-          'address': [this.customer.address, [
-               Validators.required                                  
-             ]
-          ],
-          'city': [this.customer.city, [
-               Validators.required                                  
-             ]
-          ],
-          'postalCode': [this.customer.postalCode, [
-               Validators.required                                  
-             ]
-          ],
-          'zone': [this.customer.zone, [
-                Validators.required                                  
-              ]
-           ],
            'phoneNumber': [this.customer.phoneNumber, [
                 Validators.required                                  
               ]
