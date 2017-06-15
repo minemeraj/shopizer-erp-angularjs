@@ -6,13 +6,17 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { routes } from './app.routes';
-import { UserModule } from './user/user.module';
 import { LoginModule } from './login/login.module';
 import { SignupModule } from './signup/signup.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CustomerListModule } from './dashboard/customer-list/customer-list.module';
 import { CustomerModule } from './dashboard/customer/customer.module';
+import { UserModule } from './dashboard/user/user.module';
+import { UserListModule } from './dashboard/user-list/user-list.module';
 import { OrderModule } from './dashboard/order/order.module';
+import { StatsModule } from './dashboard/stats/stats.module';
+import { OrderListModule } from './dashboard/order-list/order-list.module';
+import { PasswordModule } from './dashboard/password/password.module';
 import { AlertModule } from './_directives/alert.module';
 import { AuthGuard } from './_guard/index';
 import { AlertService, AuthenticationService, ReferencesService } from './_services/index';
@@ -38,8 +42,12 @@ import { CustomerComponent} from './dashboard/customer/customer.component';
     SignupModule,
     DashboardModule,
     CustomerListModule,
+    UserListModule,
     CustomerModule,
     OrderModule,
+    StatsModule,
+    OrderListModule,
+    PasswordModule,
     AlertModule
   ],
   providers: [

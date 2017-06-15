@@ -7,7 +7,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.Validate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +16,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +43,7 @@ public class CustomerController {
 	CustomerRepository customerRepository;
 	
 	@PostMapping("/api/customer")
-	public ResponseEntity<Customer> createCustomer(@Valid @RequestBody RESTCustomer customer, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
+	public ResponseEntity<RESTCustomer> createCustomer(@Valid @RequestBody RESTCustomer customer, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
 
 
 		Customer c = customerPopulator.populateModel(customer, locale);
@@ -56,10 +56,12 @@ public class CustomerController {
 		
 		c.setCreated(new Date());
 		customerRepository.save(c);
+		
+		RESTCustomer restCustomer = customerPopulator.populateWeb(c, locale);
 			
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/customer/{id}").buildAndExpand(c.getId()).toUri());
-		return new ResponseEntity<Customer>(c, headers, HttpStatus.CREATED);
+		return new ResponseEntity<RESTCustomer>(restCustomer, headers, HttpStatus.CREATED);
 
 		
 	}
@@ -122,6 +124,20 @@ public class CustomerController {
 		
 		
 
-	}  
+	} 
+	
+	@DeleteMapping("/api/customer/{id}")
+	public ResponseEntity<Void> deleteCustomer(@PathVariable String id, @Valid @RequestBody RESTCustomer customer, Locale locale, UriComponentsBuilder ucBuilder) throws Exception {
+
+		Customer c = customerPopulator.populateModel(customer, locale);
+
+		customerRepository.delete(c);
+
+			
+		HttpHeaders headers = new HttpHeaders();
+		return new ResponseEntity<Void>(headers, HttpStatus.OK);
+
+		
+	}
 
 }

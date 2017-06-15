@@ -5,5 +5,7 @@
 
 export const environment = {
   production: false,
-  baseUrl : 'http://localhost:8080'
+  baseUrl : 'http://localhost:8080',
+  //baseUrl : 'http://b.bamwood.ca:80',
+  appName : 'BAM wood'
 };

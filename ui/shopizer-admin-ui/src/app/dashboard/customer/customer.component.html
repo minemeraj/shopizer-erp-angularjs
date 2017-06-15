@@ -17,7 +17,7 @@
 	<div class="row">
 		<div class="col-lg-6">
 			<alert></alert>
-			<div *ngIf="customerId" class="alert-success"> {{customerId}} saved. </div>
+			<div *ngIf="customerId" class="alert-success"> {{customerId}} saved </div>
     		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
 			<form role="form" #customerForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(customerForm.value, $event)">
 				<fieldset class="form-group">
@@ -44,22 +44,22 @@
 				
 				<fieldset class="form-group">
 					<label>Email address</label> <input
-						class="form-control" placeholder="" name="emailAddress" required [(ngModel)]="customer.emailAddress">
+						class="form-control" placeholder="" name="emailAddress" [(ngModel)]="customer.emailAddress">
 				</fieldset>
 				
 				<fieldset class="form-group">
 					<label>Address</label> <input
-						class="form-control" placeholder="" name="address" required [(ngModel)]="customer.address">
+						class="form-control" placeholder="" name="address"  [(ngModel)]="customer.address">
 				</fieldset>
 				
 				<fieldset class="form-group">
 					<label>City</label> <input
-						class="form-control" placeholder="" name="city" required [(ngModel)]="customer.city">
+						class="form-control" placeholder="" name="city"  [(ngModel)]="customer.city">
 				</fieldset>
 				
 				<fieldset class="form-group">
 					<label>Postal code</label> <input
-						class="form-control" placeholder="" name="postalCode" required [(ngModel)]="customer.postalCode">
+						class="form-control" placeholder="" name="postalCode"  [(ngModel)]="customer.postalCode">
 				</fieldset>
 				
 				
@@ -97,6 +97,10 @@
   		
              	 <span *ngIf="customerId">	
              	 <button type="button" (click)="newCustomer()" class="btn btn-default">New Customer</button>
+				 </span>
+				 
+				 <span *ngIf="customerId">	
+             	 <button type="button" (click)="newOrder()" class="btn btn-default">Continue to order creation</button>
 				 </span>
 			</form>
 

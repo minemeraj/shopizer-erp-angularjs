@@ -2,7 +2,7 @@
 	<!-- Page Heading -->
 	<div class="row">
 		<div class="col-lg-12">
-			<h2 class="page-header">Create order</h2>
+			<h2 class="page-header">Create / edit order</h2>
 			<ol class="breadcrumb">
 				<li><i class="fa fa-dashboard"></i> <a
 					href="Javascript:void(0)" routerLink="/dashboard/home">Dashboard</a>
@@ -13,34 +13,173 @@
 	</div>
 	<!-- /.row -->
 	
+				<!-- 
+				
+				Customer								OrderID
+				First Name Last Name					Order estimation date
+				Email									Status
+				Phone									Created By
+				Address									Last Update
+				City									StatusHistory
+				Postal Code
+				Province, Country
+				
+				Order Description --------------------------------
+				
+														Price (Order Total - Sub total)
+														Down payment (Order Total)
+														Total (Order.total)
+														
+				Comments
+
+				 -->
+
 
 	<div class="row">
-		<div class="col-lg-6">
-			<alert></alert>
-			<div *ngIf="customerId" class="alert-success"> {{customerId}} saved. </div>
-    		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
-			<form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
-				<fieldset class="form-group">
-					<label>First name</label> <input class="form-control" name="firstName" required [(ngModel)]="customer.firstName">
-					<!--<p class="help-block">Example block-level help text here.</p>-->
-					<!--
-					<div [hidden]="firstName.valid || firstName.pristine"
-             			class="alert alert-danger">
-          				First name is required
-          			</div>
-          			-->
-				</fieldset>
+	    <form role="form" #orderForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(orderForm.value, $event)">
+			<div class="col-lg-12">
+				<alert></alert>
+				<div *ngIf="orderSaved" class="alert-success">Order {{order.orderNumber}} saved </div>
+	    		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
 				
-				<button type="submit" class="btn btn-secondary"
-             		[disabled]="!orderForm.form.valid">Submit</button>
-  		
-             	 <span *ngIf="orderId">	
-             	 <button type="button" (click)="newCustomer()" class="btn btn-default">New Order</button>
-				 </span>
-			</form>
-
-
-		</div>
+				<div class="col-lg-6">
+					<h3>Customer details</h3>
+					<!--<input type="hidden" name = "order.customer.id" [(ngModel)]="order.customer.id">-->
+					{{order.customer.firstName}} {{order.customer.lastName}}<br/>
+					<span *ngIf="order.customer.emailAddress">{{order.customer.emailAddress}}<br/></span>
+					{{order.customer.phoneNumber}}<br/>
+					{{order.customer.address}}<br/>
+					{{order.customer.city}}<br/>
+					{{order.customer.postalCode}}<br/>
+					{{order.customer.zone}}, {{order.customer.country}}
+				</div>
+				<div class="col-lg-6">
+					<h3>Order details</h3>
+					<table>
+						<tr>
+							<td>Order id </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.orderNumber}}</strong></td>
+						</tr>
+						<tr>
+							<td>Creation date </td>
+							<td>&nbsp;</td>
+							<td>{{order.created}}</td>
+						</tr>
+						<tr>
+							<td>Status </td>
+							<td>&nbsp;</td>
+							<td>					
+								<select class="form-control" [(ngModel)]="order.status" name="order.status">
+  									<option *ngFor="let x of status"  value="{{x.key}}">
+    									{{x.value}}
+  									</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Created by </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.creator}}</strong></td>
+						</tr>
+						<tr>
+							<td>Last updated by </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.lastUpdator}}</strong></td>
+						</tr>
+						<tr>
+							<td>Last update </td>
+							<td>&nbsp;</td>
+							<td><strong>{{order.modified}}</strong></td>
+						</tr>
+						<tr>
+							<td>First estimation </td>
+							<td>&nbsp;</td>
+							<td><input type="date" name="order.estimated" [(ngModel)]="order.estimated"/></td>
+						</tr>
+						<tr>
+							<td>Delivery estimation </td>
+							<td>&nbsp;</td>
+							<td><input type="date" name="order.deliveryEstimated" [(ngModel)]="order.deliveryEstimated"/></td>
+						</tr>
+						<tr>
+							<td>Status history </td>
+							<td>&nbsp;</td>
+							<td>
+								<span *ngFor="let os of order.orderStatusHistory">
+									<p>
+					    				<strong>{{os.created}}</strong>&nbsp;-&nbsp;{{os.user}}<br/>
+					    				{{os.status}}
+					    			</p>
+								</span>
+							</td>
+						</tr>
+					</table>
+					
+				</div>
+				
+			</div>
+			<div class="col-lg-12">	
+			          <br/>
+					  <div class="form-group">
+    					<h4>Order description</h4>
+    					<textarea class="form-control" name="order.description" rows="5" [(ngModel)]="order.description"></textarea>
+  					  </div>
+			</div>
+			
+			<div class="col-lg-12">	
+				<div class="col-lg-9">
+					<div class="col-lg-6">
+						
+					<br/>
+					<!--<span *ngIf="orderId">-->
+					    <span *ngFor="let c of orderComments">
+					    	<p>
+					    		<strong>{{c.created}}</strong>&nbsp;-&nbsp;{{c.user}}<br/>
+					    		{{c.comment}}
+					    	</p>
+					    </span>
+						<!-- add comments here -->
+						<textarea class="form-control" name="commentText" rows="3" [(ngModel)]="commentText"></textarea>
+						<br/>
+	             	 	<button type="button" (click)="addComment()" class="btn btn-default">Add comment</button>
+					 <!--</span>-->
+					</div>
+					<div class="col-lg-3">
+					&nbsp;
+					</div>
+					
+					</div>
+				<div class="col-lg-3">
+					<table>
+						<tr>
+							<td>Price</td><td>&nbsp;<td><input class="form-control" (change)="totalsChanged()" placeholder="0" name="price" [(ngModel)]="price"></td>
+						</tr>
+						<tr><td colspan="3">&nbsp;</tr>
+						<tr>
+							<td>Installation</td><td>&nbsp;<td><input class="form-control" (change)="totalsChanged()" placeholder="0" name="installation" [(ngModel)]="installation"></td>
+						</tr>
+						<tr><td colspan="3">&nbsp;</tr>
+						<tr>
+							<td>Deposit</td><td>&nbsp;<td><input class="form-control" (change)="totalsChanged()" placeholder="0" name="deposit" [(ngModel)]="deposit"></td>
+						</tr>	
+						<tr><td colspan="3">&nbsp;</tr>
+						<tr>
+							<td><strong>Total</strong></td><td>&nbsp;<td><!--<input class="form-control" placeholder="" name="total">-->{{total}}</td>
+						</tr>				
+					</table>
+				</div>
+			</div>
+					 
+			<div class="col-lg-12">	
+					<br/>	 
+					<button type="submit" class="btn btn-secondary">Save</button>
+	             		<!-- 
+					<button type="submit" class="btn btn-secondary"
+	             		[disabled]="!orderForm.valid">Save</button>
+	             		-->
+			</div>
+		</form>
 	</div>
 	<!-- /.row -->
 

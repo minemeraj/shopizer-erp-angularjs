@@ -1,0 +1,83 @@
+<div class="container-fluid">
+	<!-- Page Heading -->
+	<div class="row">
+		<div class="col-lg-12">
+			<h2 class="page-header">User management</h2>
+			<ol class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a
+					href="Javascript:void(0)" routerLink="/dashboard/home">Dashboard</a>
+				</li>
+				<li class="active"><i class="fa fa-edit"></i> User management</li>
+			</ol>
+		</div>
+	</div>
+	<!-- /.row -->
+	
+
+	<div class="row">
+		<div class="col-lg-6">
+			<alert></alert>
+			<div *ngIf="userId" class="alert-success"> {{userId}} saved. </div>
+    		<div *ngIf="errorMessage" class="alert-danger"> {{errorMessage}} </div> 
+			<form role="form" #userForm="ngForm"  *ngIf="active" (ngSubmit)="onSubmit(userForm.value, $event)">
+				<fieldset class="form-group">
+				    <input type="hidden" name = "id" [(ngModel)]="user.id">
+					<label>First name</label> <input class="form-control" name="firstName" required [(ngModel)]="user.firstName">
+				</fieldset>
+
+				<fieldset class="form-group">
+					<label>Last Name</label> <input
+						class="form-control" placeholder="" name="lastName" required [(ngModel)]="user.lastName">
+				</fieldset>
+				
+				<fieldset class="form-group">
+					<label>Email address (used as user name)</label> <input
+						class="form-control" placeholder="" name="userName" required [(ngModel)]="user.userName">
+				</fieldset>	
+				
+				<fieldset class="form-group">
+					<label>Password</label> <input
+						class="form-control" placeholder="" name="password" [(ngModel)]="password">
+				</fieldset>
+				
+				<fieldset class="form-group">
+					<label>Repeat password</label> <input
+						class="form-control" placeholder="" name="repeatPassword" >
+				</fieldset>	
+				
+				<fieldset class="form-group">
+					<label>User has to be notified when order is ready</label>
+				    <!--<div *ngFor="let permission of permissions">-->
+				     <label>
+				            <input type="checkbox"
+				                   name="roles"
+				                   value="status-notifiable"
+				                   [(ngModel)]="isNotifiable"/>
+				      </label>
+				</fieldset>							
+				
+				<fieldset class="form-group">
+					<label>User is a system administrator</label>
+				    <!--<div *ngFor="let permission of permissions">-->
+				     <label>
+				            <input type="checkbox"
+				                   name="permission"
+				                   value="admin"
+				                   [(ngModel)]="isAdmin"/>
+				      </label>
+				</fieldset>
+
+				
+				<button type="submit" class="btn btn-secondary"
+             		[disabled]="!userForm.form.valid">Submit</button>
+  		
+             	 <span *ngIf="customerId">	
+             	 <button type="button" (click)="newUser()" class="btn btn-default">New User</button>
+				 </span>
+
+			</form>
+		</div>
+	</div>
+	<!-- /.row -->
+
+</div>

@@ -28,6 +28,7 @@ export class AuthenticationService {
         return this.http.post(environment.baseUrl + '/login?' + params,'',options)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
+                localStorage.removeItem('currentUser');
                 console.log("LOGIN RESPONSE " + response);
                 let user = response.json();
                 console.log("USER " + user);
@@ -38,13 +39,14 @@ export class AuthenticationService {
                     console.log('yes setting currentUser with token ' + token);
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     //localStorage.setItem('currentUser', JSON.stringify(user));
-                    localStorage.setItem('currentUser', JSON.stringify({ username: user.username, firstName: user.firstName, permissions: user.permissions, token: token }));
+                    localStorage.setItem('currentUser', JSON.stringify({ username: user.username, firstName: user.firstName, lastName: user.lastName, permissions: user.permissions, token: token }));
                 }
           });
     }
  
     logout() {
         // remove user from local storage to log user out
+        console.log('Loggin out');
         localStorage.removeItem('currentUser');
     }
 }

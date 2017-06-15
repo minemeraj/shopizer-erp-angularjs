@@ -9,6 +9,11 @@ import { GridRoutes } from './grid/grid.routes';
 import { CustomerListRoutes } from './customer-list/customer-list.routes';
 import { CustomerRoutes } from './customer/customer.routes';
 import { OrderRoutes } from './order/order.routes';
+import { UserRoutes } from './user/user.routes';
+import { StatsRoutes } from './stats/stats.route';
+import { UserListRoutes } from './user-list/user-list.routes';
+import { OrderListRoutes } from './order-list/order-list.routes';
+import { PasswordRoutes } from './password/password.routes';
 import { BSComponentRoutes } from './bs-component/bsComponent.routes';
 import { BSElementRoutes } from './bs-element/bsElement.routes';
 
@@ -32,7 +37,12 @@ export const DashboardRoutes: Route[] = [
         ...BSElementRoutes,
         ...CustomerListRoutes,
         ...CustomerRoutes,
-        ...OrderRoutes
+        ...OrderRoutes,
+        ...OrderListRoutes,
+        ...UserRoutes,
+        ...StatsRoutes,
+        ...UserListRoutes,
+        ...PasswordRoutes
       ]
     }
 ];

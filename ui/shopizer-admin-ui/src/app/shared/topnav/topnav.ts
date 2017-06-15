@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../../user/index';
+import { environment } from '../../../environments/environment';
 
 declare var $: any;
 
@@ -10,9 +11,12 @@ declare var $: any;
 
 export class TopNavComponent {
   currentUser: User;
+  appName : string;
   
   constructor() {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        //console.log(environment.appName);
+        this.appName = environment.appName;
   }
   
   changeTheme(color: string): void {

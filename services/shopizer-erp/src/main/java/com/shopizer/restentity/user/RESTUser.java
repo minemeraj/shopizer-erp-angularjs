@@ -2,13 +2,17 @@ package com.shopizer.restentity.user;
 
 import java.util.List;
 
-public class RESTUser {
+import com.shopizer.restentity.common.RESTEntity;
+
+public class RESTUser extends RESTEntity {
 	
 	private String firstName;
 	private String lastName;
 	private String userName;
 	private List<String> permissions;
+	private List<String> roles;
 	private String token;
+	private String password;
 	
 	
 	public String getFirstName() {
@@ -40,6 +44,18 @@ public class RESTUser {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public List<String> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }

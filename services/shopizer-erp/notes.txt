@@ -1,1 +1,13 @@
-mongod --dbpath /Users/carlsamson/Documents/dev/mongodb/data/db
+mongod --dbpath /Users/carlsamson/Documents/dev/mongodb/data/db --port 27010
+
+
+NOT USED FOR NOW
+db.createUser(
+  {
+    user: "shopizer",
+    pwd: "admin123",
+    roles: [ { role: "root", db: "admin" } ]
+  })
+  
+  
+java -Xmx1024m -XX:MaxPermSize=128M -jar shopizer-erp-0.0.1-SNAPSHOT.jar &> output.log & 

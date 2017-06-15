@@ -1,9 +1,19 @@
 http://localhost:4200/dashboard/home   
+
+install node using nvm
+
+https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04
    
    
    <!-- 
   http://stackoverflow.com/questions/37631098/how-to-bundle-an-angular-2-app-for-production
    -->
+   
+  https://askubuntu.com/questions/786272/why-does-installing-node-6-x-on-ubuntu-16-04-actually-install-node-4-2-6
+   
+  Install angular
+  
+  npm install -g angular-cli 
  
   npm install ng2-bootstrap --save
   npm install angular2-iron-data-table --save
@@ -56,3 +66,10 @@ https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
 Form validation
 https://scotch.io/tutorials/angular-2-form-validation
 https://angular.io/docs/ts/latest/cookbook/form-validation.html
+
+spinner
+
+
+deploy angular to prod
+
+https://stackoverflow.com/questions/37631098/how-to-bundle-an-angular-app-for-production

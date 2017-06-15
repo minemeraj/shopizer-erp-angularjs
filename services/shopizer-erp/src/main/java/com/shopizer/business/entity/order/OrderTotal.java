@@ -3,8 +3,6 @@ package com.shopizer.business.entity.order;
 import java.math.BigDecimal;
 
 import com.shopizer.business.entity.common.EntityId;
-import com.shopizer.business.entity.common.OrderTotalTypeEnum;
-import com.shopizer.business.entity.common.OrderTotalVariationEnum;
 
 public class OrderTotal extends EntityId {
 	

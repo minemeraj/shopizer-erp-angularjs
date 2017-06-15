@@ -35,6 +35,7 @@ export class CustomerComponent implements OnInit {
         private customerService : CustomerService,
         private alertService: AlertService,
         private activatedRoute: ActivatedRoute,
+        private router: Router,
         private fb: FormBuilder
     ) { }
     
@@ -78,7 +79,7 @@ export class CustomerComponent implements OnInit {
             }
          });
         
-        console.log('Init CustomerComponent');
+        //console.log('Init CustomerComponent');
         this.getCountries();
         
         //get the list of provinces
@@ -89,7 +90,6 @@ export class CustomerComponent implements OnInit {
     }
     
     buildForm(): void {
-        console.log("-- ENTERING BUILD FORM --");
         this.customerForm = this.fb.group({
           'firstName': [this.customer.firstName, [
               Validators.required
@@ -99,26 +99,6 @@ export class CustomerComponent implements OnInit {
                Validators.required                                  
             ]
           ],
-          'emailAddress': [this.customer.emailAddress, [
-               Validators.required                                  
-            ]
-          ],
-          'address': [this.customer.address, [
-               Validators.required                                  
-             ]
-          ],
-          'city': [this.customer.city, [
-               Validators.required                                  
-             ]
-          ],
-          'postalCode': [this.customer.postalCode, [
-               Validators.required                                  
-             ]
-          ],
-          'zone': [this.customer.zone, [
-                Validators.required                                  
-              ]
-           ],
            'phoneNumber': [this.customer.phoneNumber, [
                 Validators.required                                  
               ]
@@ -131,16 +111,16 @@ export class CustomerComponent implements OnInit {
     }
     
     onSelect(code) {
-        console.log('Selected country code ' + code);
+        //console.log('Selected country code ' + code);
         this.getZones(code);
     }
     
     onSubmit(value: any, event: Event):void{
         event.preventDefault();
-        console.log("******** FORM SUBMITTED ********");
+        //console.log("******** FORM SUBMITTED ********");
         this.submitted = true;
         this.customer = value;
-        console.log('Customer id ' + this.customer.id);
+        //console.log('Customer id ' + this.customer.id);
         if(this.customer.id == null || this.customer.id == '') {
             this.customerService.create(this.customer)
                     .subscribe(
@@ -183,6 +163,7 @@ export class CustomerComponent implements OnInit {
                 this.customer = customer;
                 this.selectedCountry = new Country(customer.country, customer.country);
                 this.selectedZone = new Zone(customer.zone, customer.zone);
+                this.customerId = customer.id;
 
             }, //Bind to view
                         err => {
@@ -195,6 +176,11 @@ export class CustomerComponent implements OnInit {
         this.customer = new Customer();
         this.customerId = null;
         this.errorMessage = null;
+    }
+    
+    newOrder():void {
+        console.log('Clicked on new order');
+        this.router.navigateByUrl('/dashboard/order;customerId=' + this.customerId);
     }
 
     onValueChanged(data?: any) {

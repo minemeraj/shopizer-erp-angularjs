@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +19,12 @@ import org.springframework.util.CollectionUtils;
 
 import com.shopizer.business.entity.common.Currency;
 import com.shopizer.business.entity.common.Description;
+import com.shopizer.business.entity.order.OrderId;
 import com.shopizer.business.entity.references.Country;
 import com.shopizer.business.entity.references.Zone;
 import com.shopizer.business.entity.user.User;
 import com.shopizer.business.repository.common.CurrencyRepository;
+import com.shopizer.business.repository.order.OrderIdRepository;
 import com.shopizer.business.repository.references.CountryRepository;
 import com.shopizer.business.repository.references.ZoneRepository;
 import com.shopizer.business.repository.user.UserRepository;
@@ -45,6 +48,12 @@ public class References {
 	
 	@Inject
 	private ZonesLoaderUtil zoneLoaderUtil;
+	
+	@Inject
+	private OrderIdRepository orderIdRepository;
+	
+	@Value("${order.orderId.start}")
+	Long initialOrderId;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(References.class);
 	
@@ -71,6 +80,8 @@ public class References {
 		
 		//zones
 		createZones();
+		
+		createOrderSequenceId();
 
 		/**
 		 * ADD REQUIRED CURRENCY TO THE LIST
@@ -110,11 +121,13 @@ public class References {
 		if(admin == null) {
 			admin = new User();
 			admin.setFirstName("admin");
+			admin.setLastName("admin");
 			admin.setUserName("admin@shopizer.com");
 			admin.setLastName("");
 			
 			List<String> permissions = new ArrayList<String>();
 			permissions.add("admin");
+			permissions.add("superuser");
 			
 			admin.setPermissions(permissions);
 			
@@ -192,6 +205,23 @@ public class References {
 			zoneRepository.insert(zones.values());
 		}
 		
+	}
+	
+	private void createOrderSequenceId() throws Exception {
+		
+
+		OrderId orderId = orderIdRepository.findByIdentifier(Constants.ORDERIDIDENTIFIER);
+		
+		if(orderId!=null) {
+			return;
+		}
+		
+		orderId = new OrderId();
+		orderId.setId(Constants.ORDERIDIDENTIFIER);
+		orderId.setIdentifier(Constants.ORDERIDIDENTIFIER);
+		orderId.setNextOrderNumber(initialOrderId);
+		
+		orderIdRepository.save(orderId);
 	}
 	
 	public void status() {
